@@ -20,7 +20,7 @@ gem 'puma', '~> 4.1'
 # gem 'image_processing', '~> 1.2'
 
 # Use .env file
-gem 'dotenv', '~> 2.7', '>= 2.7.6'
+gem 'dotenv-rails', '~> 2.1', '>= 2.1.1'
 
 # User management with Devise
 gem 'devise', '~> 4.2'
