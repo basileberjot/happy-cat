@@ -37,6 +37,42 @@ class Auth extends Component {
         }
     }
 
+    // Form validation rules 
+    checkValidity(value, rules) {
+        let isValid = true;
+
+        if(rules.required) {
+            isValid = value.trim() !== '' && isValid;
+        }
+
+        if(rules.minLength) {
+            isValid = value.length >= rules.minLength && isValid;
+        }
+
+        if(rules.maxLength) {
+            isValid = value.length <= rules.maxLength && isValid;
+        }
+
+        return isValid;
+    }
+
+    // updates the input element when we enter something
+    inputChangedHandler = (event, controlName) => {
+
+        const updatedControls = {
+            ...this.state.controls,
+            [controlName]: {
+                ...this.state.controls[controlName],
+                value: event.target.value,
+                valid: this.checkValidity(event.target.value, this.state.controls[controlName].validation),
+                touched: true
+            }
+        }
+        
+        this.setState({controls: updatedControls});
+        console.log(this.state.controls[controlName], this.state.controls);
+    }
+
     render () {
 
         // Convert the state object into a array we can loop through
