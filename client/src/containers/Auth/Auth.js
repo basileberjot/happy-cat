@@ -73,7 +73,6 @@ class Auth extends Component {
         }
         
         this.setState({controls: updatedControls});
-        console.log(this.state.controls[controlName], this.state.controls);
     }
 
     submitHandler = (event) => {
