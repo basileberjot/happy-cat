@@ -22,21 +22,25 @@ export const authFail = (error) => {
     };
 };
 
-export const auth = (email, password) => {
+export const auth = (email, password, isSignUp) => {
     return dispatch => {
         dispatch(authStart());
         const authData = {
             email: email,
             password: password
+        };
+        let url = 'http://localhost:3001/users';
+        if (!isSignUp) {
+            url = 'http://localhost:3001/login';
         }
-        axios.post('http://localhost:3001/login', authData)
+        axios.post(url, authData)
             .then(response => {
                 console.log(response);
                 dispatch(authSuccess(response.data));
             })
             .catch(err => {
                 console.log(err);
-                dispatch(authFail());
+                dispatch(authFail(err));
             });
     };
 };
