@@ -115,13 +115,14 @@ class Auth extends Component {
             ));
             return (
                 <div className={classes.Auth}>
+                    <h1>{this.state.isSignUp ? 'Sign Up' : 'Log In'}</h1>
                 <form onSubmit={this.submitHandler}>
                     {form}
                     <Button btnType="Success">SUBMIT</Button>
                 </form>
                 <Button 
                     clicked={this.switchAuthModeHander}
-                    btnType="Danger">SWITCH TO {this.state.isSignUp ? 'SIGN IN' : 'SIGN UP'}
+                    btnType="Danger">{this.state.isSignUp ? 'Already have an account ? Log in here !' : 'Don\'t have an account yet ? Sign up here !'}
                 </Button>
             </div>
         );
