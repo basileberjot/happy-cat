@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
+import Spinner from '../../components/UI/Spinner/Spinner';
+
 import classes from './Auth.module.css';
 import * as actions from '../../store/actions';
 
@@ -100,7 +102,7 @@ class Auth extends Component {
         }
 
         // Email and password inputs
-        const form = formElementsArray.map(formElement => (
+        let form = formElementsArray.map(formElement => (
             <Input 
                 key={formElement.id}
                 elementType={formElement.config.elementType} 
@@ -111,19 +113,33 @@ class Auth extends Component {
                 touched={formElement.config.touched}
                 changed={(event) => this.inputChangedHandler(event, formElement.id)}
             />
-
             ));
+
+            if (this.props.loading) {
+                form = <Spinner />
+            }
+
+            let errorMessage = null;
+            if (this.props.error) {
+                errorMessage = (
+                    // Configure the error message property in the Rails API 
+                    // <p>{this.props.error.message}</p>
+                    <p>An error occured..</p>
+                );
+            }
+            
             return (
                 <div className={classes.Auth}>
                     <h1>{this.state.isSignUp ? 'Sign Up' : 'Log In'}</h1>
-                <form onSubmit={this.submitHandler}>
-                    {form}
-                    <Button btnType="Success">SUBMIT</Button>
-                </form>
-                <Button 
-                    clicked={this.switchAuthModeHander}
-                    btnType="Danger">{this.state.isSignUp ? 'Already have an account ? Log in here !' : 'Don\'t have an account yet ? Sign up here !'}
-                </Button>
+                    {errorMessage}
+                    <form onSubmit={this.submitHandler}>
+                        {form}
+                        <Button btnType="Success">SUBMIT</Button>
+                    </form>
+                    <Button 
+                        clicked={this.switchAuthModeHander}
+                        btnType="Danger">{this.state.isSignUp ? 'Already have an account ? Log in here !' : 'Don\'t have an account yet ? Sign up here !'}
+                    </Button>
             </div>
         );
     }
@@ -135,4 +151,11 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(Auth);
+const mapStateToProps = state => {
+    return {
+        loading: state.auth.loading,
+        error: state.auth.error
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
