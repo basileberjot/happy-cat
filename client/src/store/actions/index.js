@@ -1,5 +1,6 @@
 // this file bundles all actions 
 
 export {
-    auth
+    auth,
+    logout
 } from './auth';
