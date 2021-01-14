@@ -46,9 +46,9 @@ export const auth = (email, password, isSignUp) => {
             email: email,
             password: password
         };
-        let url = 'http://localhost:3001/users';
+        let url = 'http://localhost:3001/login';
         if (!isSignUp) {
-            url = 'http://localhost:3001/login';
+            url = 'http://localhost:3001/users';
         }
         axios.post(url, authData)
             .then(response => {

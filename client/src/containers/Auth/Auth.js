@@ -137,15 +137,15 @@ class Auth extends Component {
             return (
                 <div className={classes.Auth}>
                     {authRedirect}
-                    <h1>{this.state.isSignUp ? 'Sign Up' : 'Log In'}</h1>
+                    <h1>{this.state.isSignUp ? 'Log In' : 'Sign Up'}</h1>
                     {errorMessage}
                     <form onSubmit={this.submitHandler}>
                         {form}
-                        <Button btnType="Success">SUBMIT</Button>
+                        <Button btnType="Success">Submit</Button>
                     </form>
                     <Button 
                         clicked={this.switchAuthModeHander}
-                        btnType="Danger">{this.state.isSignUp ? 'Already have an account ? Log in here !' : 'Don\'t have an account yet ? Sign up here !'}
+                        btnType="Danger">{this.state.isSignUp ? 'Don\'t have an account yet ? Sign up here !' : 'Already have an account ? Log in here !'}
                     </Button>
             </div>
         );
