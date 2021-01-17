@@ -5,8 +5,10 @@ class CreateCats < ActiveRecord::Migration[6.0]
       t.date :birthdate
       t.string :breed
       t.float :weight
+      t.belongs_to :user, foreign_key: true
 
       t.timestamps
+
     end
   end
 end

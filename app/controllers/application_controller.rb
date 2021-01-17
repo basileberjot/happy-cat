@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::API
+    include ActionController::MimeResponds
+    
     def encode_token(payload)
         JWT.encode(payload, 'my_secret')
     end
@@ -27,5 +29,6 @@ class ApplicationController < ActionController::API
             end
         end
     end
+
 
 end

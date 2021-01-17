@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2021_01_08_125047) do
     t.date "birthdate"
     t.string "breed"
     t.float "weight"
+    t.belongs_to "user"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

@@ -1,53 +1,54 @@
 module Api::V1
-  class CatsController < ApplicationController
+
+    class CatsController < ApplicationController
     before_action :set_cat, only: [:show, :update, :destroy]
 
     # GET /cats
     def index
-      @cats = Cat.all
+        @cats = Cat.all
 
-      render json: @cats
+        render json: @cats
     end
 
     # GET /cats/1
     def show
-      render json: @cat
+        render json: @cat
     end
 
     # POST /cats
     def create
-      @cat = Cat.new(cat_params)
+        @cat = Cat.new(cat_params)
 
-      if @cat.save
-        render json: @cat, status: :created, location: @cat
-      else
-        render json: @cat.errors, status: :unprocessable_entity
-      end
+        if @cat.save
+            render json: :show, status: :created 
+        else
+            render json: @cat.errors, status: :unprocessable_entity
+        end
     end
 
     # PATCH/PUT /cats/1
     def update
-      if @cat.update(cat_params)
-        render json: @cat
-      else
-        render json: @cat.errors, status: :unprocessable_entity
-      end
+        if @cat.update(cat_params)
+            render json: @cat
+        else
+            render json: @cat.errors, status: :unprocessable_entity
+        end
     end
 
     # DELETE /cats/1
     def destroy
-      @cat.destroy
+        @cat.destroy
     end
 
     private
-      # Use callbacks to share common setup or constraints between actions.
-      def set_cat
-        @cat = Cat.find(params[:id])
-      end
+        # Use callbacks to share common setup or constraints between actions.
+        def set_cat
+            @cat = Cat.find(params[:id])
+        end
 
-      # Only allow a trusted parameter "white list" through.
-      def cat_params
-        params.require(:cat).permit(:name, :birthdate, :breed, :weight)
-      end
-  end
+        # Only allow a trusted parameter "white list" through.
+        def cat_params
+            params.require(:cat).permit(:name, :birthdate, :breed, :weight, :user_id)
+        end
+    end
 end

@@ -5,3 +5,7 @@ export {
     logout,
     authCheckState
 } from './auth';
+
+export {
+    register
+} from './myCat';

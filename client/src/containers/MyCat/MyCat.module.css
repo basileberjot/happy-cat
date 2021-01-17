@@ -1,0 +1,24 @@
+input[type="date"]:before {
+    content: attr(placeholder) !important;
+    color: #aaa;
+    margin-right: 0.5em;
+  }
+  input[type="date"]:focus:before,
+  input[type="date"]:valid:before {
+    content: "";
+  }
+.MyCat {
+    margin: 20px auto;
+    width: 80%;
+    text-align: center;
+    box-shadow: 0 2px 3px #ccc;
+    border: 1px solid #eee;
+    padding: 20px 50px 20px 50px;
+    box-sizing: border-box;
+}
+
+@media (min-width: 600px) {
+    .MyCat {
+        width: 500px;
+    }
+}
