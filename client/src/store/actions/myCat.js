@@ -8,14 +8,14 @@ export const registerMyCatStart = () => {
     };
 };
 
-export const registerMyCatSuccess = (name, birthdate, weight, breed, userId) => {
+export const registerMyCatSuccess = (catData) => {
     return {
         type: actionTypes.REGISTER_MY_CAT_SUCCESS,
-        name: name,
-        birthdate: birthdate,
-        weight: weight,
-        breed: breed,
-        userId: userId
+        name: catData.name,
+        birthdate: catData.birthdate,
+        weight: catData.weight,
+        breed: catData.breed,
+        userId: catData.user_id
     };
 };
 
@@ -40,7 +40,7 @@ export const register = (name, birthdate, weight, breed, userId) => {
         axios.post(url, catData)
             .then(response => {
                 console.log(response);
-                dispatch(registerMyCatSuccess(response.data.name, response.data.user.id));
+                dispatch(registerMyCatSuccess(catData));
             })
             .catch(err => {
                 dispatch(registerMyCatFail(err));

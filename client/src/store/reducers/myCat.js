@@ -18,7 +18,7 @@ const registerMyCatSuccess = (state, action) => {
     return updateObject(state, {
         name: action.name,
         birthdate: action.birthdate,
-        weight: action.birthdate,
+        weight: action.weight,
         breed: action.breed,
         userId: action.userId,
         error: null,
