@@ -17,6 +17,7 @@ export const registerMyCatSuccess = (catData) => {
         breed: catData.breed,
         userId: catData.user_id
     };
+    
 };
 
 export const registerMyCatFail = (error) => {

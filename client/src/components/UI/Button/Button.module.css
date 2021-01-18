@@ -32,6 +32,10 @@
     line-height: 46px;
 }
 
-.Danger {
+.Change {
     color: #40A4C8;
+}
+
+.Danger {
+    color: Red;
 }

@@ -4,6 +4,7 @@ import classes from './MyCat.module.css';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import * as actions from '../../store/actions';
+import axios from 'axios';
 
 class MyCat extends Component {
     state = {
@@ -61,7 +62,16 @@ class MyCat extends Component {
                 valid: false,
                 touched: false
             }
-        }
+        },
+        hasCat: false,
+        catName: null,
+        catBirthdate: null,
+        catWeight: null,
+        catBreed: null
+    }
+
+    componentDidMount() {
+        this.getCats();
     }
 
     // Form validation rules 
@@ -105,6 +115,32 @@ class MyCat extends Component {
         const userId = localStorage.getItem('userId');
 
         this.props.onSubmit(this.state.controls.name.value, this.state.controls.birthdate.value, this.state.controls.weight.value, this.state.controls.breed.value, userId);
+        this.getCats();
+    }
+
+    getCats = () => {
+        let cats = null;
+        const userId = localStorage.getItem('userId');
+        if(userId) {
+            let url = 'http://localhost:3001/api/v1/users/' + userId + '/cats';
+            axios.get(url)
+                .then(response => {
+                    cats = (response.data);
+                    console.log(cats);
+                    if(cats.length !== 0) {
+                        this.setState({
+                            hasCat: true,
+                            catName: cats[0].name,
+                            catBirthdate: cats[0].birthdate,
+                            catWeight: cats[0].weight,
+                            catBreed: cats[0].breed
+                        });
+                    } 
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }
     }
 
     render () {
@@ -132,7 +168,15 @@ class MyCat extends Component {
             ));
 
         return (
-            <div className={classes.MyCat}>
+            this.state.hasCat ? <div className={classes.MyCat}>
+                    <h1>{this.state.catName}</h1>
+                    <p class="lead">
+                        {this.state.catBirthdate} | {this.state.catWeight} kg | {this.state.catBreed}
+                    </p>
+                    <Button btnType="Success">Edit</Button>
+                    <Button btnType="Danger">Delete</Button>
+            </div> 
+            : <div className={classes.MyCat}>
                 <h1>Who's your little buddy ? (^・ω・^ )</h1>
                 <form onSubmit={this.submitHandler}>
                     {form}

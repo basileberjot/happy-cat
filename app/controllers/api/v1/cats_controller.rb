@@ -40,6 +40,12 @@ module Api::V1
         @cat.destroy
     end
 
+    def get_cats
+        @user = User.find(params[:id])
+        @cats = @user.cats
+        render json: @cats
+    end
+
     private
         # Use callbacks to share common setup or constraints between actions.
         def set_cat
