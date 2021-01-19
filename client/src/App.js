@@ -6,7 +6,6 @@ import Layout from './hoc/Layout/Layout';
 import Auth from './containers/Auth/Auth';
 import Logout from './containers/Auth/Logout/Logout';
 import MyCat from './containers/MyCat/MyCat';
-import Form from './containers/Form/Form';
 import * as actions from './store/actions';
 
 class App extends Component {
@@ -26,7 +25,6 @@ class App extends Component {
       routes = (
         <Switch>
           <Route path="/logout" component={Logout} />
-          <Route path="/my-cat/edit" component={Form} />
           <Route path="/my-cat" component={MyCat} />
           <Redirect to="/" />
         </Switch> 
