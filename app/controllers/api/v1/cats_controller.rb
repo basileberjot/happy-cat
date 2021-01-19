@@ -28,6 +28,8 @@ module Api::V1
 
     # PATCH/PUT /cats/1
     def update
+        # @cat = Cat.find_by(params[:id])
+        # @cat.update(cat_params)
         if @cat.update(cat_params)
             render json: @cat
         else

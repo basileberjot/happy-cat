@@ -64,6 +64,8 @@ class MyCat extends Component {
             }
         },
         hasCat: false,
+        editCat: false,
+        catId: 0,
         catName: null,
         catBirthdate: null,
         catWeight: null,
@@ -114,7 +116,12 @@ class MyCat extends Component {
         event.preventDefault();
         const userId = localStorage.getItem('userId');
 
-        this.props.onSubmit(this.state.controls.name.value, this.state.controls.birthdate.value, this.state.controls.weight.value, this.state.controls.breed.value, userId);
+        if(!this.state.editCat) {
+            this.props.onSubmitRegister(this.state.controls.name.value, this.state.controls.birthdate.value, this.state.controls.weight.value, this.state.controls.breed.value, userId);
+        } else {
+            const catId = this.state.catId;
+            this.props.onSubmitEdit(this.state.controls.name.value, this.state.controls.birthdate.value, this.state.controls.weight.value, this.state.controls.breed.value, userId, catId);
+        }
         this.getCats();
     }
 
@@ -130,6 +137,7 @@ class MyCat extends Component {
                     if(cats.length !== 0) {
                         this.setState({
                             hasCat: true,
+                            catId: cats[0].id,
                             catName: cats[0].name,
                             catBirthdate: cats[0].birthdate,
                             catWeight: cats[0].weight,
@@ -141,6 +149,10 @@ class MyCat extends Component {
                     console.log(err);
                 });
         }
+    }
+
+    editContinueHandler = () => {
+        this.setState({ editCat: true });
     }
 
     render () {
@@ -168,28 +180,32 @@ class MyCat extends Component {
             ));
 
         return (
-            this.state.hasCat ? <div className={classes.MyCat}>
-                    <h1>{this.state.catName}</h1>
-                    <p class="lead">
-                        {this.state.catBirthdate} | {this.state.catWeight} kg | {this.state.catBreed}
-                    </p>
-                    <Button btnType="Success">Edit</Button>
-                    <Button btnType="Danger">Delete</Button>
-            </div> 
-            : <div className={classes.MyCat}>
-                <h1>Who's your little buddy ? (^・ω・^ )</h1>
+
+            !this.state.hasCat || this.state.editCat ? 
+            <div className={classes.MyCat}>
+                <h1>{!this.state.editCat ? 'Who\'s your little buddy ? (^・ω・^ )' : 'Edit your Cat'}</h1>
                 <form onSubmit={this.submitHandler}>
                     {form}
                     <Button btnType="Success">Submit !</Button>
                 </form>
             </div>
+            : 
+            <div className={classes.MyCat}>
+                    <h1>{this.state.catName}</h1>
+                    <p>
+                        {this.state.catBirthdate} | {this.state.catWeight} kg | {this.state.catBreed}
+                    </p>
+                    <Button btnType="Success" clicked={this.editContinueHandler}>Edit</Button>
+                    <Button btnType="Danger">Delete</Button>
+            </div> 
         );
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSubmit: (name, birthdate, weight, breed, userId) => dispatch(actions.register(name, birthdate, weight, breed, userId))
+        onSubmitRegister: (name, birthdate, weight, breed, userId) => dispatch(actions.register(name, birthdate, weight, breed, userId)),
+        onSubmitEdit: (name, birthdate, weight, breed, userId, catId) => dispatch(actions.edit(name, birthdate, weight, breed, userId, catId))
     };
 }
 

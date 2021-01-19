@@ -7,5 +7,6 @@ export {
 } from './auth';
 
 export {
-    register
+    register,
+    edit
 } from './myCat';

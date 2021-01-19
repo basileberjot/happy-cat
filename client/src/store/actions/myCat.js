@@ -1,6 +1,8 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
 
+// ------ CREATE ------
+
 // use this action to set a loading state and show a loading spinner 
 export const registerMyCatStart = () => {
     return {
@@ -37,7 +39,7 @@ export const register = (name, birthdate, weight, breed, userId) => {
             breed: breed,
             user_id: userId
         };
-        let url = 'http://localhost:3001/api/v1/cats#create';
+        let url = 'http://localhost:3001/api/v1/cats';
         axios.post(url, catData)
             .then(response => {
                 console.log(response);
@@ -45,6 +47,56 @@ export const register = (name, birthdate, weight, breed, userId) => {
             })
             .catch(err => {
                 dispatch(registerMyCatFail(err));
+            });
+    };
+};
+
+// ------ EDIT ------
+
+export const editMyCatStart = () => {
+    return {
+        type: actionTypes.EDIT_MY_CAT_START
+    };
+};
+
+export const editMyCatSuccess = (catData) => {
+    return {
+        type: actionTypes.EDIT_MY_CAT_SUCCESS,
+        name: catData.name,
+        birthdate: catData.birthdate,
+        weight: catData.weight,
+        breed: catData.breed,
+        userId: catData.user_id
+    };
+    
+};
+
+export const editMyCatFail = (error) => {
+    return {
+        type: actionTypes.EDIT_MY_CAT_FAIL,
+        error: error
+    };
+};
+
+export const edit = (name, birthdate, weight, breed, userId, catId) => {
+    return dispatch => {
+        dispatch(editMyCatStart());
+        const id = catId
+        const catData = {
+            name: name,
+            birthdate: birthdate,
+            weight: weight,
+            breed: breed,
+            user_id: userId,
+            catId: catId
+        };
+        let url = 'http://localhost:3001/api/v1/cats/' + id;
+        axios.put(url, catData)
+            .then(response => {
+                dispatch(editMyCatSuccess(catData));
+            })
+            .catch(err => {
+                dispatch(editMyCatFail(err));
             });
     };
 };
