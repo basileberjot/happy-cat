@@ -8,5 +8,6 @@ export {
 
 export {
     register,
-    edit
+    edit,
+    deleteCat
 } from './myCat';

@@ -125,6 +125,15 @@ class MyCat extends Component {
         this.getCats();
     }
 
+    editContinueHandler = () => {
+        this.setState({ editCat: true });
+    }
+
+    deleteHandler = () => {
+        let catId = this.state.catId;
+        this.props.onDelete(catId);
+    }
+
     getCats = () => {
         let cats = null;
         const userId = localStorage.getItem('userId');
@@ -149,10 +158,6 @@ class MyCat extends Component {
                     console.log(err);
                 });
         }
-    }
-
-    editContinueHandler = () => {
-        this.setState({ editCat: true });
     }
 
     render () {
@@ -196,7 +201,7 @@ class MyCat extends Component {
                         {this.state.catBirthdate} | {this.state.catWeight} kg | {this.state.catBreed}
                     </p>
                     <Button btnType="Success" clicked={this.editContinueHandler}>Edit</Button>
-                    <Button btnType="Danger">Delete</Button>
+                    <Button btnType="Danger" clicked={this.deleteHandler}>Delete</Button>
             </div> 
         );
     };
@@ -205,7 +210,8 @@ class MyCat extends Component {
 const mapDispatchToProps = dispatch => {
     return {
         onSubmitRegister: (name, birthdate, weight, breed, userId) => dispatch(actions.register(name, birthdate, weight, breed, userId)),
-        onSubmitEdit: (name, birthdate, weight, breed, userId, catId) => dispatch(actions.edit(name, birthdate, weight, breed, userId, catId))
+        onSubmitEdit: (name, birthdate, weight, breed, userId, catId) => dispatch(actions.edit(name, birthdate, weight, breed, userId, catId)),
+        onDelete: (catId) => dispatch(actions.deleteCat(catId))
     };
 }
 

@@ -100,3 +100,40 @@ export const edit = (name, birthdate, weight, breed, userId, catId) => {
             });
     };
 };
+
+// ------ DELETE ------
+
+export const deleteMyCatStart = () => {
+    return {
+        type: actionTypes.DELETE_MY_CAT_START
+    };
+};
+
+export const deleteMyCatSuccess = () => {
+    return {
+        type: actionTypes.DELETE_MY_CAT_SUCCESS
+    };
+    
+};
+
+export const deleteMyCatFail = (error) => {
+    return {
+        type: actionTypes.DELETE_MY_CAT_FAIL,
+        error: error
+    };
+};
+
+export const deleteCat = (catId) => {
+    return dispatch => {
+        dispatch(deleteMyCatStart());
+        const id = catId;
+        let url = 'http://localhost:3001/api/v1/cats/' + id;
+        axios.delete(url)
+            .then(response => {
+                dispatch(deleteMyCatSuccess());
+            })
+            .catch(err => {
+                dispatch(deleteMyCatFail(err));
+            });
+    };
+};
