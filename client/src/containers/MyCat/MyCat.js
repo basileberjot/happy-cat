@@ -121,6 +121,7 @@ class MyCat extends Component {
         } else {
             const catId = this.state.catId;
             this.props.onSubmitEdit(this.state.controls.name.value, this.state.controls.birthdate.value, this.state.controls.weight.value, this.state.controls.breed.value, userId, catId);
+            this.setState({ editCat: false });
         }
         this.getCats();
     }
@@ -131,7 +132,15 @@ class MyCat extends Component {
 
     deleteHandler = () => {
         let catId = this.state.catId;
-        this.props.onDelete(catId);
+        let confirm = window.confirm('Are you sure you want to delete your Cat ?');
+        if (confirm) {
+            this.props.onDelete(catId);
+            this.setState({ hasCat: false });
+        } 
+    }
+
+    returnHandler = () => {
+        this.setState({ editCat: false });
     }
 
     getCats = () => {
@@ -192,6 +201,7 @@ class MyCat extends Component {
                 <form onSubmit={this.submitHandler}>
                     {form}
                     <Button btnType="Success">Submit !</Button>
+                    {this.state.editCat ? <Button btnType="Change" clicked={this.returnHandler}>Back</Button> : null}
                 </form>
             </div>
             : 
