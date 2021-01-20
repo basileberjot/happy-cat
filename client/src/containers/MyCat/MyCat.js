@@ -4,9 +4,14 @@ import classes from './MyCat.module.css';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import * as actions from '../../store/actions';
-import axios from 'axios';
+
+const userId = localStorage.getItem('userId');
 
 class MyCat extends Component {
+    // constructor(props) {
+    //     super(props)
+    //     this.state = initialState;
+    // }
     state = {
         controls: {
             name: {
@@ -15,7 +20,7 @@ class MyCat extends Component {
                     type: 'text',
                     placeholder: 'Name'
                 },
-                value: '',
+                value: this.props.catName !== '' ? this.props.catName : '',
                 validation: {
                     required: true
                 },
@@ -28,7 +33,7 @@ class MyCat extends Component {
                     type: 'date',
                     placeholder: 'Birthdate :',
                 },
-                value: '',
+                value: this.props.catBirthdate !== '' ? this.props.catBirthdate : '',
                 validation: {
                     required: true
                 },
@@ -42,7 +47,7 @@ class MyCat extends Component {
                     placeholder: 'Weight : e.g 2.83',
                     step: ".1"
                 },
-                value: '',
+                value: this.props.catWeight !== '' ? this.props.catWeight : '',
                 validation: {
                     required: true
                 },
@@ -55,7 +60,7 @@ class MyCat extends Component {
                     type: 'text',
                     placeholder: 'Breed'
                 },
-                value: '',
+                value: this.props.catBreed !== '' ? this.props.catBreed : '',
                 validation: {
                     required: true
                 },
@@ -67,8 +72,8 @@ class MyCat extends Component {
     }
 
     componentDidMount() {
-        const userId = localStorage.getItem('userId');
         this.props.getCats(userId);
+        console.log(this.props.catName);
     }
 
     // Form validation rules 
@@ -109,7 +114,6 @@ class MyCat extends Component {
     submitHandler = (event) => {
         //prevents the reloading of the page
         event.preventDefault();
-        const userId = localStorage.getItem('userId');
 
         if(!this.state.goToEdit) {
             this.props.onSubmitRegister(this.state.controls.name.value, this.state.controls.birthdate.value, this.state.controls.weight.value, this.state.controls.breed.value, userId);
@@ -122,7 +126,9 @@ class MyCat extends Component {
     }
 
     editContinueHandler = () => {
-        this.setState({ goToEdit: true });
+        this.setState({ 
+            goToEdit: true
+        });
     }
 
     returnHandler = () => {
@@ -134,6 +140,7 @@ class MyCat extends Component {
         let confirm = window.confirm('Are you sure you want to delete your Cat ?');
         if (confirm) {
             this.props.onDelete(catId);
+            // this.setState(initialState);
         } 
     }
 

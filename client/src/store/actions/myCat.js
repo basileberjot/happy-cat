@@ -42,7 +42,6 @@ export const register = (name, birthdate, weight, breed, userId) => {
         let url = 'http://localhost:3001/api/v1/cats';
         axios.post(url, catData)
             .then(response => {
-                console.log(response);
                 dispatch(registerMyCatSuccess(catData));
             })
             .catch(err => {
@@ -177,7 +176,6 @@ export const getCats = (userId) => {
                 catData = (response.data[0]);
                 if (catData.length !== 0) {
                     dispatch(getCatSuccess(catData));
-                    console.log(catData);
                 } else {
                     dispatch(getCatFail());
                 }
