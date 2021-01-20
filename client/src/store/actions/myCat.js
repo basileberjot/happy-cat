@@ -66,9 +66,9 @@ export const editMyCatSuccess = (catData) => {
         birthdate: catData.birthdate,
         weight: catData.weight,
         breed: catData.breed,
-        userId: catData.user_id
+        userId: catData.user_id,
+        catId: catData.catId
     };
-    
 };
 
 export const editMyCatFail = (error) => {
@@ -105,20 +105,20 @@ export const edit = (name, birthdate, weight, breed, userId, catId) => {
 
 export const deleteMyCatStart = () => {
     return {
-        type: actionTypes.DELETE_MY_CAT_START
+        type: actionTypes.DELETE_CAT_START
     };
 };
 
 export const deleteMyCatSuccess = () => {
     return {
-        type: actionTypes.DELETE_MY_CAT_SUCCESS
+        type: actionTypes.DELETE_CAT_SUCCESS
     };
     
 };
 
 export const deleteMyCatFail = (error) => {
     return {
-        type: actionTypes.DELETE_MY_CAT_FAIL,
+        type: actionTypes.DELETE_CAT_FAIL,
         error: error
     };
 };
@@ -137,3 +137,53 @@ export const deleteCat = (catId) => {
             });
     };
 };
+
+// ------ GET CATS ------
+
+export const getCatStart = () => {
+    return {
+        type: actionTypes.GET_CAT_START
+    };
+};
+
+export const getCatSuccess = (catData) => {
+    return {
+        type: actionTypes.GET_CAT_SUCCESS,
+        name: catData.name,
+        birthdate: catData.birthdate,
+        weight: catData.weight,
+        breed: catData.breed,
+        userId: catData.user_id,
+        catId: catData.id,
+        hasCat: true
+    };
+    
+};
+
+export const getCatFail = (error) => {
+    return {
+        type: actionTypes.GET_CAT_FAIL,
+        error: error
+    };
+};
+
+export const getCats = (userId) => {
+    return dispatch => {        
+        dispatch(getCatStart());
+        let catData = null;
+        let url = 'http://localhost:3001/api/v1/users/' + userId + '/cats';
+        axios.get(url)
+            .then(response => {
+                catData = (response.data[0]);
+                if (catData.length !== 0) {
+                    dispatch(getCatSuccess(catData));
+                    console.log(catData);
+                } else {
+                    dispatch(getCatFail());
+                }
+            })
+            .catch(err => {
+                dispatch(getCatFail(err));
+            });
+    }
+}

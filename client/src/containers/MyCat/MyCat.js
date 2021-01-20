@@ -63,17 +63,12 @@ class MyCat extends Component {
                 touched: false
             }
         },
-        hasCat: false,
-        editCat: false,
-        catId: 0,
-        catName: null,
-        catBirthdate: null,
-        catWeight: null,
-        catBreed: null
+        goToEdit: false,
     }
 
     componentDidMount() {
-        this.getCats();
+        const userId = localStorage.getItem('userId');
+        this.props.getCats(userId);
     }
 
     // Form validation rules 
@@ -116,57 +111,30 @@ class MyCat extends Component {
         event.preventDefault();
         const userId = localStorage.getItem('userId');
 
-        if(!this.state.editCat) {
+        if(!this.state.goToEdit) {
             this.props.onSubmitRegister(this.state.controls.name.value, this.state.controls.birthdate.value, this.state.controls.weight.value, this.state.controls.breed.value, userId);
         } else {
-            const catId = this.state.catId;
+            const catId = this.props.catId;
             this.props.onSubmitEdit(this.state.controls.name.value, this.state.controls.birthdate.value, this.state.controls.weight.value, this.state.controls.breed.value, userId, catId);
-            this.setState({ editCat: false });
+            this.setState({ goToEdit: false });
         }
-        this.getCats();
+        this.props.getCats(userId);
     }
 
     editContinueHandler = () => {
-        this.setState({ editCat: true });
-    }
-
-    deleteHandler = () => {
-        let catId = this.state.catId;
-        let confirm = window.confirm('Are you sure you want to delete your Cat ?');
-        if (confirm) {
-            this.props.onDelete(catId);
-            this.setState({ hasCat: false });
-        } 
+        this.setState({ goToEdit: true });
     }
 
     returnHandler = () => {
-        this.setState({ editCat: false });
+        this.setState({ goToEdit: false });
     }
 
-    getCats = () => {
-        let cats = null;
-        const userId = localStorage.getItem('userId');
-        if(userId) {
-            let url = 'http://localhost:3001/api/v1/users/' + userId + '/cats';
-            axios.get(url)
-                .then(response => {
-                    cats = (response.data);
-                    console.log(cats);
-                    if(cats.length !== 0) {
-                        this.setState({
-                            hasCat: true,
-                            catId: cats[0].id,
-                            catName: cats[0].name,
-                            catBirthdate: cats[0].birthdate,
-                            catWeight: cats[0].weight,
-                            catBreed: cats[0].breed
-                        });
-                    } 
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-        }
+    deleteHandler = () => {
+        let catId = this.props.catId;
+        let confirm = window.confirm('Are you sure you want to delete your Cat ?');
+        if (confirm) {
+            this.props.onDelete(catId);
+        } 
     }
 
     render () {
@@ -194,21 +162,20 @@ class MyCat extends Component {
             ));
 
         return (
-
-            !this.state.hasCat || this.state.editCat ? 
+            !this.props.hasCat || this.props.editCat || this.state.goToEdit ? 
             <div className={classes.MyCat}>
-                <h1>{!this.state.editCat ? 'Who\'s your little buddy ? (^・ω・^ )' : 'Edit your Cat'}</h1>
+                <h1>{!this.state.goToEdit ? 'Who\'s your little buddy ? (^・ω・^ )' : 'Edit your Cat'}</h1>
                 <form onSubmit={this.submitHandler}>
                     {form}
                     <Button btnType="Success">Submit !</Button>
-                    {this.state.editCat ? <Button btnType="Change" clicked={this.returnHandler}>Back</Button> : null}
+                    {this.state.goToEdit ? <Button btnType="Change" clicked={this.returnHandler}>Back</Button> : null}
                 </form>
             </div>
             : 
             <div className={classes.MyCat}>
-                    <h1>{this.state.catName}</h1>
+                    <h1>{this.props.catName}</h1>
                     <p>
-                        {this.state.catBirthdate} | {this.state.catWeight} kg | {this.state.catBreed}
+                        {this.props.catBirthdate} | {this.props.catWeight} kg | {this.props.catBreed}
                     </p>
                     <Button btnType="Success" clicked={this.editContinueHandler}>Edit</Button>
                     <Button btnType="Danger" clicked={this.deleteHandler}>Delete</Button>
@@ -217,12 +184,25 @@ class MyCat extends Component {
     };
 };
 
+const mapStateToProps = state => {
+    return {
+        catName: state.myCat.name,
+        catBirthdate: state.myCat.birthdate,
+        catWeight: state.myCat.weight,
+        catBreed: state.myCat.breed,
+        catId: state.myCat.catId,
+        hasCat: state.myCat.hasCat,
+        editCat: state.myCat.editCat
+    }
+}
+
 const mapDispatchToProps = dispatch => {
     return {
+        getCats: (userId) => dispatch(actions.getCats(userId)),
         onSubmitRegister: (name, birthdate, weight, breed, userId) => dispatch(actions.register(name, birthdate, weight, breed, userId)),
         onSubmitEdit: (name, birthdate, weight, breed, userId, catId) => dispatch(actions.edit(name, birthdate, weight, breed, userId, catId)),
         onDelete: (catId) => dispatch(actions.deleteCat(catId))
     };
 }
 
-export default connect(null, mapDispatchToProps)(MyCat);
+export default connect(mapStateToProps, mapDispatchToProps)(MyCat);

@@ -8,7 +8,10 @@ const initialState = {
     breed: null,
     userId: null,
     catId: null,
-    loading: false
+    loading: false,
+    error: false,
+    editCat: false,
+    hasCat: false
 };
 
 const registerMyCatStart = (state, action) => {
@@ -35,7 +38,7 @@ const registerMyCatFail = (state, action) => {
 };
 
 const editMyCatStart = (state, action) => {
-    return updateObject(state, {error: null, loading: true});
+    return updateObject(state, {error: null, loading: true });
 };
 
 const editMyCatSuccess = (state, action) => {
@@ -47,11 +50,62 @@ const editMyCatSuccess = (state, action) => {
         userId: action.userId,
         catId: action.catId,
         error: null,
-        loading: false
+        loading: false,
+        editCat: false
     });
 };
 
 const editMyCatFail = (state, action) => {
+    return updateObject(state, {
+        error: action.error,
+        loading: false
+    });
+};
+
+const getCatStart = (state, action) => {
+    return updateObject(state, {error: null, loading: true });
+};
+
+const getCatSuccess = (state, action) => {
+    return updateObject(state, {
+        name: action.name,
+        birthdate: action.birthdate,
+        weight: action.weight,
+        breed: action.breed,
+        userId: action.userId,
+        catId: action.catId,
+        error: null,
+        loading: false,
+        hasCat: true
+    });
+};
+
+const getCatFail = (state, action) => {
+    return updateObject(state, {
+        error: action.error,
+        loading: false
+    });
+};
+
+const deleteCatStart = (state, action) => {
+    return updateObject(state, {error: null, loading: true });
+};
+
+const deleteCatSuccess = (state, action) => {
+    return updateObject(state, {
+        name: '',
+        birthdate: '',
+        weight: '',
+        breed: '',
+        userId: '',
+        catId: '',
+        error: null,
+        loading: false,
+        hasCat: false
+    });
+};
+
+const deleteCatFail = (state, action) => {
     return updateObject(state, {
         error: action.error,
         loading: false
@@ -66,6 +120,12 @@ const reducer = (state = initialState, action) => {
         case actionTypes.EDIT_MY_CAT_START: return editMyCatStart(state, action);
         case actionTypes.EDIT_MY_CAT_SUCCESS: return editMyCatSuccess(state, action);
         case actionTypes.EDIT_MY_CAT_FAIL: return editMyCatFail(state, action);
+        case actionTypes.GET_CAT_START: return getCatStart(state, action);
+        case actionTypes.GET_CAT_SUCCESS: return getCatSuccess(state, action);
+        case actionTypes.GET_CAT_FAIL: return getCatFail(state, action);
+        case actionTypes.DELETE_CAT_START: return deleteCatStart(state, action);
+        case actionTypes.DELETE_CAT_SUCCESS: return deleteCatSuccess(state, action);
+        case actionTypes.DELETE_CAT_FAIL: return deleteCatFail(state, action);
         default: 
             return state;
     };
