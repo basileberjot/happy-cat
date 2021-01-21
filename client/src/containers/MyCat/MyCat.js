@@ -8,10 +8,6 @@ import * as actions from '../../store/actions';
 const userId = localStorage.getItem('userId');
 
 class MyCat extends Component {
-    // constructor(props) {
-    //     super(props)
-    //     this.state = initialState;
-    // }
     state = {
         controls: {
             name: {
@@ -40,20 +36,6 @@ class MyCat extends Component {
                 valid: false,
                 touched: false
             },
-            weight: {
-                elementType: 'input',
-                elementConfig: {
-                    type: 'number',
-                    placeholder: 'Weight : e.g 2.83',
-                    step: ".1"
-                },
-                value: this.props.catWeight !== '' ? this.props.catWeight : '',
-                validation: {
-                    required: true
-                },
-                valid: false,
-                touched: false
-            },
             breed: {
                 elementType: 'input',
                 elementConfig: {
@@ -69,11 +51,6 @@ class MyCat extends Component {
             }
         },
         goToEdit: false,
-    }
-
-    componentDidMount() {
-        this.props.getCats(userId);
-        console.log(this.props.catName);
     }
 
     // Form validation rules 
@@ -116,10 +93,10 @@ class MyCat extends Component {
         event.preventDefault();
 
         if(!this.state.goToEdit) {
-            this.props.onSubmitRegister(this.state.controls.name.value, this.state.controls.birthdate.value, this.state.controls.weight.value, this.state.controls.breed.value, userId);
+            this.props.onSubmitRegister(this.state.controls.name.value, this.state.controls.birthdate.value, this.state.controls.breed.value, userId);
         } else {
             const catId = this.props.catId;
-            this.props.onSubmitEdit(this.state.controls.name.value, this.state.controls.birthdate.value, this.state.controls.weight.value, this.state.controls.breed.value, userId, catId);
+            this.props.onSubmitEdit(this.state.controls.name.value, this.state.controls.birthdate.value, this.state.controls.breed.value, userId, catId);
             this.setState({ goToEdit: false });
         }
         this.props.getCats(userId);
@@ -140,7 +117,6 @@ class MyCat extends Component {
         let confirm = window.confirm('Are you sure you want to delete your Cat ?');
         if (confirm) {
             this.props.onDelete(catId);
-            // this.setState(initialState);
         } 
     }
 
@@ -182,7 +158,7 @@ class MyCat extends Component {
             <div className={classes.MyCat}>
                     <h1>{this.props.catName}</h1>
                     <p>
-                        {this.props.catBirthdate} | {this.props.catWeight} kg | {this.props.catBreed}
+                        {this.props.catBirthdate} | {/* {this.props.catWeight} kg | */} {this.props.catBreed}
                     </p>
                     <Button btnType="Success" clicked={this.editContinueHandler}>Edit</Button>
                     <Button btnType="Danger" clicked={this.deleteHandler}>Delete</Button>
@@ -195,7 +171,6 @@ const mapStateToProps = state => {
     return {
         catName: state.myCat.name,
         catBirthdate: state.myCat.birthdate,
-        catWeight: state.myCat.weight,
         catBreed: state.myCat.breed,
         catId: state.myCat.catId,
         hasCat: state.myCat.hasCat,
@@ -206,8 +181,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         getCats: (userId) => dispatch(actions.getCats(userId)),
-        onSubmitRegister: (name, birthdate, weight, breed, userId) => dispatch(actions.register(name, birthdate, weight, breed, userId)),
-        onSubmitEdit: (name, birthdate, weight, breed, userId, catId) => dispatch(actions.edit(name, birthdate, weight, breed, userId, catId)),
+        onSubmitRegister: (name, birthdate, breed, userId) => dispatch(actions.register(name, birthdate, breed, userId)),
+        onSubmitEdit: (name, birthdate, breed, userId, catId) => dispatch(actions.edit(name, birthdate, breed, userId, catId)),
         onDelete: (catId) => dispatch(actions.deleteCat(catId))
     };
 }

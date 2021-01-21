@@ -14,9 +14,7 @@ export const registerMyCatSuccess = (catData) => {
     return {
         type: actionTypes.REGISTER_MY_CAT_SUCCESS,
         name: catData.name,
-        birthdate: catData.birthdate,
-        weight: catData.weight,
-        breed: catData.breed,
+        birthdate: catData.birthdate,        breed: catData.breed,
         userId: catData.user_id
     };
     
@@ -29,13 +27,12 @@ export const registerMyCatFail = (error) => {
     };
 };
 
-export const register = (name, birthdate, weight, breed, userId) => {
+export const register = (name, birthdate, breed, userId) => {
     return dispatch => {
         dispatch(registerMyCatStart());
         const catData = {
             name: name,
             birthdate: birthdate,
-            weight: weight,
             breed: breed,
             user_id: userId
         };
@@ -63,7 +60,6 @@ export const editMyCatSuccess = (catData) => {
         type: actionTypes.EDIT_MY_CAT_SUCCESS,
         name: catData.name,
         birthdate: catData.birthdate,
-        weight: catData.weight,
         breed: catData.breed,
         userId: catData.user_id,
         catId: catData.catId
@@ -77,14 +73,13 @@ export const editMyCatFail = (error) => {
     };
 };
 
-export const edit = (name, birthdate, weight, breed, userId, catId) => {
+export const edit = (name, birthdate, breed, userId, catId) => {
     return dispatch => {
         dispatch(editMyCatStart());
         const id = catId
         const catData = {
             name: name,
             birthdate: birthdate,
-            weight: weight,
             breed: breed,
             user_id: userId,
             catId: catId
@@ -150,7 +145,6 @@ export const getCatSuccess = (catData) => {
         type: actionTypes.GET_CAT_SUCCESS,
         name: catData.name,
         birthdate: catData.birthdate,
-        weight: catData.weight,
         breed: catData.breed,
         userId: catData.user_id,
         catId: catData.id,

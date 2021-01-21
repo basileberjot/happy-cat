@@ -6,17 +6,22 @@ import Layout from './hoc/Layout/Layout';
 import Auth from './containers/Auth/Auth';
 import Logout from './containers/Auth/Logout/Logout';
 import MyCat from './containers/MyCat/MyCat';
+import Home from './containers/Home/Home';
 import * as actions from './store/actions';
+
+const userId = localStorage.getItem('userId');
 
 class App extends Component {
   componentDidMount () {
     this.props.onTryAutoSignup();
+    this.props.onTryGetCats();
   }
 
   render() {
     let routes = (
       <Switch>
         <Route path="/auth" component={Auth} />
+        <Route path="/" exact component={Home} />
         <Redirect to="/" />
       </Switch>    
     );
@@ -26,6 +31,7 @@ class App extends Component {
         <Switch>
           <Route path="/logout" component={Logout} />
           <Route path="/my-cat" component={MyCat} />
+          <Route path="/" exact component={Home} />
           <Redirect to="/" />
         </Switch> 
       );
@@ -49,7 +55,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onTryAutoSignup: () => dispatch(actions.authCheckState())
+    onTryAutoSignup: () => dispatch(actions.authCheckState()),
+    onTryGetCats: () => dispatch(actions.getCats(userId))
   };
 };
 
