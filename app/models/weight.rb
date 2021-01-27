@@ -1,3 +1,3 @@
 class Weight < ApplicationRecord
-    belongs_to :cats
+    belongs_to :cat
 end

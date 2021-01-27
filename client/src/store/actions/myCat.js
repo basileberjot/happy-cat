@@ -132,6 +132,44 @@ export const deleteCat = (catId) => {
     };
 };
 
+// ------ GET WEIGHTS ------
+
+export const getWeightsStart = () => {
+    return {
+        type: actionTypes.GET_WEIGHTS_START
+    };
+};
+
+export const getWeightsSuccess = (weights) => {
+    return {
+        type: actionTypes.GET_WEIGHTS_SUCCESS,
+        weights: weights
+    };
+    
+};
+
+export const getWeightsFail = (error) => {
+    return {
+        type: actionTypes.GET_WEIGHTS_FAIL,
+        error: error
+    };
+};
+
+export const getWeights = (catId) => {
+    return dispatch => {
+        dispatch(getWeightsStart());
+        let url = 'http://localhost:3001/api/v1/cat/' + catId + '/weights';
+        axios.get(url)
+            .then(response => {
+                console.log(response.data);
+                dispatch(getWeightsSuccess(response.data));
+            })
+            .catch(err => {
+                dispatch(getWeightsFail(err));
+            });
+    };
+};
+
 // ------ GET CATS ------
 
 export const getCatStart = () => {
@@ -164,12 +202,13 @@ export const getCats = (userId) => {
     return dispatch => {        
         dispatch(getCatStart());
         let catData = null;
-        let url = 'http://localhost:3001/api/v1/users/' + userId + '/cats';
+        let url = 'http://localhost:3001/api/v1/user/' + userId + '/cats';
         axios.get(url)
             .then(response => {
                 catData = (response.data[0]);
                 if (catData.length !== 0) {
                     dispatch(getCatSuccess(catData));
+                    dispatch(getWeights(catData.id));
                 } else {
                     dispatch(getCatFail());
                 }
@@ -179,3 +218,4 @@ export const getCats = (userId) => {
             });
     }
 }
+

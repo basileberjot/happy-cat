@@ -11,7 +11,8 @@ const initialState = {
     loading: false,
     error: false,
     editCat: false,
-    hasCat: false
+    hasCat: false,
+    weights: null
 };
 
 const registerMyCatStart = (state, action) => {
@@ -56,6 +57,25 @@ const editMyCatSuccess = (state, action) => {
 };
 
 const editMyCatFail = (state, action) => {
+    return updateObject(state, {
+        error: action.error,
+        loading: false
+    });
+};
+
+const getWeightsStart = (state, action) => {
+    return updateObject(state, {error: null, loading: true});
+};
+
+const getWeightsSuccess = (state, action) => {
+    return updateObject(state, {
+        weights: action.weights,
+        error: null,
+        loading: false
+    });
+};
+
+const getWeightsFail = (state, action) => {
     return updateObject(state, {
         error: action.error,
         loading: false
@@ -120,6 +140,9 @@ const reducer = (state = initialState, action) => {
         case actionTypes.EDIT_MY_CAT_START: return editMyCatStart(state, action);
         case actionTypes.EDIT_MY_CAT_SUCCESS: return editMyCatSuccess(state, action);
         case actionTypes.EDIT_MY_CAT_FAIL: return editMyCatFail(state, action);
+        case actionTypes.GET_WEIGHTS_START: return getWeightsStart(state, action);
+        case actionTypes.GET_WEIGHTS_SUCCESS: return getWeightsSuccess(state, action);
+        case actionTypes.GET_WEIGHTS_FAIL: return getWeightsFail(state, action);
         case actionTypes.GET_CAT_START: return getCatStart(state, action);
         case actionTypes.GET_CAT_SUCCESS: return getCatSuccess(state, action);
         case actionTypes.GET_CAT_FAIL: return getCatFail(state, action);

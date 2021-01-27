@@ -10,5 +10,10 @@ export {
     register,
     edit,
     deleteCat,
-    getCats
+    getCats,
+    getWeights
 } from './myCat';
+
+export {
+    submitWeight
+} from './home';

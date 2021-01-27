@@ -7,7 +7,9 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :cats
-      get 'users/:id/cats' => 'cats#get_cats', :as => :get_cats
+      resources :weights
+      get 'user/:id/cats' => 'cats#get_cats', :as => :get_cats
+      get 'cat/:id/weights' => 'weights#get_weights', :as => :get_weights
     end
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
