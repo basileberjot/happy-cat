@@ -85,7 +85,7 @@ class Auth extends Component {
         this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignUp);
     }
 
-    switchAuthModeHander = () => {
+    switchAuthModeHandler = () => {
         this.setState(prevState => {
             return {isSignUp : !prevState.isSignUp};
         });
@@ -144,7 +144,7 @@ class Auth extends Component {
                         <Button btnType="Success">Submit</Button>
                     </form>
                     <Button 
-                        clicked={this.switchAuthModeHander}
+                        clicked={this.switchAuthModeHandler}
                         btnType="Change">{this.state.isSignUp ? 'Don\'t have an account yet ? Sign up here !' : 'Already have an account ? Log in here !'}
                     </Button>
             </div>

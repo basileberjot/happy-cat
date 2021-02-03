@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
+import * as actions from '../../store/actions';
 
 // ------ CREATE ------
 
@@ -35,8 +36,9 @@ export const submitWeight = (catWeight, catId) => {
         console.log(catData);
         let url = 'http://localhost:3001/api/v1/weights';
         axios.post(url, catData)
-            .then(response => {
+            .then( () => {
                 dispatch(submitWeightSuccess(catData));
+                dispatch(actions.getWeights(catId));
             })
             .catch(err => {
                 dispatch(submitWeightFail(err));

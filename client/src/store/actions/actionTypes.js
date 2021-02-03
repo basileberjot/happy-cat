@@ -3,6 +3,9 @@ export const AUTH_SUCCESS = 'AUTH_SUCCESS';
 export const AUTH_FAIL = 'AUTH_FAIL';
 export const AUTH_LOGOUT = 'AUTH_LOGOUT';
 
+export const GO_TO_LOGIN = 'GO_TO_LOGIN';
+export const GO_TO_REGISTER = 'GO_TO_REGISTER';
+
 export const REGISTER_MY_CAT_START = 'REGISTER_MY_CAT_START';
 export const REGISTER_MY_CAT_SUCCESS = 'REGISTER_MY_CAT_SUCCESS';
 export const REGISTER_MY_CAT_FAIL = 'REGISTER_MY_CAT_FAIL';

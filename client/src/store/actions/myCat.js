@@ -14,10 +14,10 @@ export const registerMyCatSuccess = (catData) => {
     return {
         type: actionTypes.REGISTER_MY_CAT_SUCCESS,
         name: catData.name,
-        birthdate: catData.birthdate,        breed: catData.breed,
+        birthdate: catData.birthdate,        
+        breed: catData.breed,
         userId: catData.user_id
     };
-    
 };
 
 export const registerMyCatFail = (error) => {
@@ -38,7 +38,7 @@ export const register = (name, birthdate, breed, userId) => {
         };
         let url = 'http://localhost:3001/api/v1/cats';
         axios.post(url, catData)
-            .then(response => {
+            .then( () => {
                 dispatch(registerMyCatSuccess(catData));
             })
             .catch(err => {

@@ -4,7 +4,8 @@ import { updateObject } from '../utility';
 const initialState = {
     loading: false,
     error: false,
-    weights: null
+    weights: null,
+    hasSubmitWeight: false
 };
 
 const submitWeightStart = (state, action) => {
@@ -15,7 +16,8 @@ const submitWeightSuccess = (state, action) => {
     return updateObject(state, {
         weights: action.weights,
         error: null,
-        loading: false
+        loading: false,
+        hasSubmitWeight: true
     });
 };
 
@@ -25,8 +27,6 @@ const submitWeightFail = (state, action) => {
         loading: false
     });
 };
-
-
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {

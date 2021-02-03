@@ -5,7 +5,8 @@ const initialState = {
     token: null,
     userId: null,
     error: null,
-    loading: false
+    loading: false,
+    isSignUp: true
 };
 
 const authStart = (state, action) => {
@@ -31,6 +32,10 @@ const authFail = (state, action) => {
 const authLogout = (state, action) => {
     return updateObject(state, { token: null, userId: null});
 };
+
+// const goToLogin = (state, action) => {
+//     return updateObject(state, {error: null, isSignUp: true});
+// };
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {

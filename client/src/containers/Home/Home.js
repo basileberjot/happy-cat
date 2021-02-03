@@ -23,7 +23,8 @@ class Home extends Component {
                 valid: false,
                 touched: false
             }
-        }
+        },
+        displayWeights: true
     }
 
     componentDidMount() {
@@ -72,6 +73,7 @@ class Home extends Component {
         const catId = this.props.catId;
         console.log(catId);
         this.props.onSubmitWeight(this.state.controls.weight.value, catId);
+        this.setState({displayWeights: true});
     }
 
     registerCatHandler = () => {
@@ -80,6 +82,16 @@ class Home extends Component {
 
     logInHandler = () => {
         this.props.history.push('/auth');
+    }
+
+    displayWeightFormHandler = (event) => {
+        event.preventDefault();
+
+        this.setState({displayWeights: false});
+    }
+
+    displayWeightsHandler = () => {
+        this.setState({displayWeights: true});
     }
 
     render () {
@@ -109,25 +121,34 @@ class Home extends Component {
         let weights = <Spinner />;
         if (!this.props.loading && this.props.weights) {
             weights = this.props.weights.map(weight => (
-                <Weight 
-                    key={weight.id}
-                    date={new Date(weight.created_at).toLocaleDateString('ja-JP')}
-                    value={weight.value}
-                />
+                <div>
+                    <h1>{this.props.catName}'s weight history</h1>
+                    <Weight 
+                        key={weight.id}
+                        date={new Date(weight.created_at).toLocaleDateString('ja-JP')}
+                        value={weight.value + ' kg'}
+                    />
+                </div>
             ))
         }
         
         return (
             this.props.isAuthenticated ?
-                this.props.hasCat ? 
-                    <div className={classes.Home}>
-                        <h1>How much does {this.props.catName} weigh today ?</h1>
-                        <form onSubmit={this.submitHandler}>
-                            {form}
-                            <Button btnType="Success">Submit !</Button>
-                        </form>
-                    {weights}
-                    </div>
+                this.props.hasCat ?
+                    this.state.displayWeights ? 
+                        <div className={classes.Home}>
+                            <Button btnType="Success" clicked={this.displayWeightFormHandler}>Enter a new weight !</Button>
+                            {weights}
+                        </div>
+                    :
+                        <div className={classes.Home}>
+                            <h1>How much does {this.props.catName} weigh today ?</h1>
+                            <form onSubmit={this.submitHandler}>
+                                {form}
+                                <Button btnType="Success">Submit !</Button>
+                                {!this.state.displayWeights ? <Button btnType="Change" clicked={this.displayWeightsHandler}>Back</Button> : null}
+                            </form>
+                        </div>
                 :
                     <div className={classes.Home}>
                         You didn’t register your cat yet. Please tell us about your kitty <span className={classes.FollowLink} onClick={this.registerCatHandler}>here</span> !
@@ -147,7 +168,8 @@ const mapStateToProps = state => {
         catId: state.myCat.catId,
         hasCat: state.myCat.hasCat,
         loading: state.home.loading,
-        weights: state.myCat.weights
+        weights: state.myCat.weights,
+        hasSubmitWeight: state.home.hasSubmitWeight
     };
 }
 

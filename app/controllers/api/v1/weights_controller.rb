@@ -44,15 +44,9 @@ module Api::V1
 
     def get_weights
         @cat = Cat.find(params[:id])
-        @weights = @cat.weights
+        @weights = @cat.weights.order(created_at: :desc)
         render json: @weights
     end
-
-    # def get_weights
-    #     @user = User.find(params[:id])
-    #     @weights = @user.weights
-    #     render json: @weights
-    # end
 
     private
         # Use callbacks to share common setup or constraints between actions.
