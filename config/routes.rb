@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       resources :weights
       get 'user/:id/cats' => 'cats#get_cats', :as => :get_cats
       get 'cat/:id/weights' => 'weights#get_weights', :as => :get_weights
+      delete 'cat/:id/weights' => 'weights#clear_weights', :as => :clear_weights
     end
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

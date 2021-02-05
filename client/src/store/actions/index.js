@@ -15,5 +15,6 @@ export {
 } from './myCat';
 
 export {
-    submitWeight
+    submitWeight,
+    deleteWeights
 } from './home';

@@ -48,6 +48,12 @@ module Api::V1
         render json: @weights
     end
 
+    def clear_weights
+        @cat = Cat.find(params[:id])
+        @weights = @cat.weights
+        @weights.destroy_all
+    end
+
     private
         # Use callbacks to share common setup or constraints between actions.
         def set_weight

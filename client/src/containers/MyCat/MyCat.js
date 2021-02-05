@@ -155,7 +155,7 @@ class MyCat extends Component {
                 <h1>{!this.state.goToEdit ? 'Who\'s your little buddy ? (^・ω・^ )' : 'Edit your Cat'}</h1>
                 <form onSubmit={this.submitHandler}>
                     {form}
-                    <label for="image">Upload image
+                    <label htmlFor="image">Upload image
                         <input type="file" name="image" accept="image/*" onChange={this.onImageChange}/>
                     </label>
                     <Button btnType="Success">Submit !</Button>

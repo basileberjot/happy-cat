@@ -71,7 +71,6 @@ class Home extends Component {
         event.preventDefault();
 
         const catId = this.props.catId;
-        console.log(catId);
         this.props.onSubmitWeight(this.state.controls.weight.value, catId);
         this.setState({displayWeights: true});
     }
@@ -92,6 +91,14 @@ class Home extends Component {
 
     displayWeightsHandler = () => {
         this.setState({displayWeights: true});
+    }
+
+    clearWeightsHandler = () => {
+        let catId = this.props.catId;
+        let confirm = window.confirm('Are you sure you want to clear your Cat\'s weight history ?');
+        if (confirm) {
+            this.props.onClearWeights(catId);
+        } 
     }
 
     render () {
@@ -122,7 +129,6 @@ class Home extends Component {
         if (!this.props.loading && this.props.weights) {
             weights = this.props.weights.map(weight => (
                 <div>
-                    <h1>{this.props.catName}'s weight history</h1>
                     <Weight 
                         key={weight.id}
                         date={new Date(weight.created_at).toLocaleDateString('ja-JP')}
@@ -134,7 +140,6 @@ class Home extends Component {
 
         let image = <Spinner />;
         if (!this.props.loading && this.props.image) {
-            console.log(this.props.image);
             image = (
                 <img className={classes.Image} src={this.props.image.url} />
             );
@@ -146,7 +151,11 @@ class Home extends Component {
                     this.state.displayWeights ? 
                         <div className={classes.Home}>
                             {image}
+                            <br />
                             <Button btnType="Success" clicked={this.displayWeightFormHandler}>Enter a new weight !</Button>
+                            <br />
+                            <Button btnType="Change" clicked={this.clearWeightsHandler}>Clear weight history</Button>
+                            {this.props.weights ? <h1>{this.props.catName}'s weight history</h1> : null}
                             {weights}
                         </div>
                     :
@@ -185,7 +194,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSubmitWeight: (weight, catId) => dispatch(actions.submitWeight(weight, catId))
+        onSubmitWeight: (weight, catId) => dispatch(actions.submitWeight(weight, catId)),
+        onClearWeights: (catId) => dispatch(actions.deleteWeights(catId))
     };
 }
 

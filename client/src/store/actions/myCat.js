@@ -169,7 +169,6 @@ export const getWeights = (catId) => {
         let url = 'http://localhost:3001/api/v1/cat/' + catId + '/weights';
         axios.get(url)
             .then(response => {
-                console.log(response.data);
                 dispatch(getWeightsSuccess(response.data));
             })
             .catch(err => {
