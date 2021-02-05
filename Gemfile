@@ -32,8 +32,7 @@ gem 'rack-cors'
 # Use JWT Token
 gem 'jwt' 
 
-# Render Models in JSON
-gem 'jsonapi-serializer'
+gem 'active_model_serializers'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

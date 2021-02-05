@@ -51,6 +51,7 @@ class MyCat extends Component {
             }
         },
         goToEdit: false,
+        featured_image: null
     }
 
     // Form validation rules 
@@ -93,7 +94,7 @@ class MyCat extends Component {
         event.preventDefault();
 
         if(!this.state.goToEdit) {
-            this.props.onSubmitRegister(this.state.controls.name.value, this.state.controls.birthdate.value, this.state.controls.breed.value, userId);
+            this.props.onSubmitRegister(this.state.controls.name.value, this.state.controls.birthdate.value, this.state.controls.breed.value, userId, this.state.featured_image);
         } else {
             const catId = this.props.catId;
             this.props.onSubmitEdit(this.state.controls.name.value, this.state.controls.birthdate.value, this.state.controls.breed.value, userId, catId);
@@ -119,6 +120,10 @@ class MyCat extends Component {
             this.props.onDelete(catId);
         } 
     }
+
+    onImageChange = event => { 
+        this.setState({ featured_image: event.target.files[0] });
+    };
 
     render () {
         // Convert the state object into a array we can loop through
@@ -150,6 +155,9 @@ class MyCat extends Component {
                 <h1>{!this.state.goToEdit ? 'Who\'s your little buddy ? (^・ω・^ )' : 'Edit your Cat'}</h1>
                 <form onSubmit={this.submitHandler}>
                     {form}
+                    <label for="image">Upload image
+                        <input type="file" name="image" accept="image/*" onChange={this.onImageChange}/>
+                    </label>
                     <Button btnType="Success">Submit !</Button>
                     {this.state.goToEdit ? <Button btnType="Change" clicked={this.returnHandler}>Back</Button> : null}
                 </form>
@@ -181,7 +189,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         getCats: (userId) => dispatch(actions.getCats(userId)),
-        onSubmitRegister: (name, birthdate, breed, userId) => dispatch(actions.register(name, birthdate, breed, userId)),
+        onSubmitRegister: (name, birthdate, breed, userId, image) => dispatch(actions.register(name, birthdate, breed, userId, image)),
         onSubmitEdit: (name, birthdate, breed, userId, catId) => dispatch(actions.edit(name, birthdate, breed, userId, catId)),
         onDelete: (catId) => dispatch(actions.deleteCat(catId))
     };

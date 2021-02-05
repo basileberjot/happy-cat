@@ -27,15 +27,23 @@ export const registerMyCatFail = (error) => {
     };
 };
 
-export const register = (name, birthdate, breed, userId) => {
+export const register = (name, birthdate, breed, userId, image) => {
     return dispatch => {
         dispatch(registerMyCatStart());
-        const catData = {
-            name: name,
-            birthdate: birthdate,
-            breed: breed,
-            user_id: userId
-        };
+        const catData = new FormData();
+        catData.append('name', name);
+        catData.append('birthdate', birthdate);
+        catData.append('breed', breed);
+        catData.append('user_id', userId);
+        catData.append('image', image);
+
+        // const catData = {
+        //     name: name,
+        //     birthdate: birthdate,
+        //     breed: breed,
+        //     user_id: userId,
+        //     image: image
+        // };
         let url = 'http://localhost:3001/api/v1/cats';
         axios.post(url, catData)
             .then( () => {
@@ -186,6 +194,7 @@ export const getCatSuccess = (catData) => {
         breed: catData.breed,
         userId: catData.user_id,
         catId: catData.id,
+        image: catData.image,
         hasCat: true
     };
     

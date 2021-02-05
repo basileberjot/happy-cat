@@ -12,7 +12,8 @@ const initialState = {
     error: false,
     editCat: false,
     hasCat: false,
-    weights: null
+    weights: null,
+    image: null
 };
 
 const registerMyCatStart = (state, action) => {
@@ -94,6 +95,7 @@ const getCatSuccess = (state, action) => {
         breed: action.breed,
         userId: action.userId,
         catId: action.catId,
+        image: action.image,
         error: null,
         loading: false,
         hasCat: true

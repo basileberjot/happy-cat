@@ -54,7 +54,7 @@ module Api::V1
 
         # Only allow a trusted parameter "white list" through.
         def cat_params
-            params.require(:cat).permit(:name, :birthdate, :breed, :weight, :user_id)
+            params.permit(:name, :birthdate, :breed, :user_id, :image)
         end
     end
 end

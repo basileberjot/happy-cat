@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  default_url_options :host => "localhost:3001"
+
   resource :users, only: [:create]
   post "/login", to: "auth#login"
   # get "/auto_login", to: "auth#auto_login"

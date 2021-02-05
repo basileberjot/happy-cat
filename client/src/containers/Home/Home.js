@@ -28,7 +28,7 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        // console.log(this.props.weights);
+        // console.log(this.props.image);
     }
 
     // updates the input element when we enter something
@@ -131,12 +131,21 @@ class Home extends Component {
                 </div>
             ))
         }
-        
+
+        let image = <Spinner />;
+        if (!this.props.loading && this.props.image) {
+            console.log(this.props.image);
+            image = (
+                <img className={classes.Image} src={this.props.image.url} />
+            );
+        }
+    
         return (
             this.props.isAuthenticated ?
                 this.props.hasCat ?
                     this.state.displayWeights ? 
                         <div className={classes.Home}>
+                            {image}
                             <Button btnType="Success" clicked={this.displayWeightFormHandler}>Enter a new weight !</Button>
                             {weights}
                         </div>
@@ -169,7 +178,8 @@ const mapStateToProps = state => {
         hasCat: state.myCat.hasCat,
         loading: state.home.loading,
         weights: state.myCat.weights,
-        hasSubmitWeight: state.home.hasSubmitWeight
+        image: state.myCat.image,
+        hasSubmitWeight: state.home.hasSubmitWeight,
     };
 }
 
