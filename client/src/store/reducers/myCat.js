@@ -27,6 +27,7 @@ const registerMyCatSuccess = (state, action) => {
         weight: action.weight,
         breed: action.breed,
         userId: action.userId,
+        image: action.image,
         error: null,
         loading: false
     });

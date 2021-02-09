@@ -30,6 +30,7 @@ export const registerMyCatFail = (error) => {
 export const register = (name, birthdate, breed, userId, image) => {
     return dispatch => {
         dispatch(registerMyCatStart());
+
         const catData = new FormData();
         catData.append('name', name);
         catData.append('birthdate', birthdate);
@@ -37,17 +38,11 @@ export const register = (name, birthdate, breed, userId, image) => {
         catData.append('user_id', userId);
         catData.append('image', image);
 
-        // const catData = {
-        //     name: name,
-        //     birthdate: birthdate,
-        //     breed: breed,
-        //     user_id: userId,
-        //     image: image
-        // };
         let url = 'http://localhost:3001/api/v1/cats';
         axios.post(url, catData)
             .then( () => {
                 dispatch(registerMyCatSuccess(catData));
+                dispatch(getCats(userId));
             })
             .catch(err => {
                 dispatch(registerMyCatFail(err));
@@ -81,61 +76,27 @@ export const editMyCatFail = (error) => {
     };
 };
 
-export const edit = (name, birthdate, breed, userId, catId) => {
+export const edit = (name, birthdate, breed, userId, catId, image) => {
     return dispatch => {
         dispatch(editMyCatStart());
         const id = catId
-        const catData = {
-            name: name,
-            birthdate: birthdate,
-            breed: breed,
-            user_id: userId,
-            catId: catId
-        };
+
+        const catData = new FormData();
+        catData.append('name', name);
+        catData.append('birthdate', birthdate);
+        catData.append('breed', breed);
+        catData.append('user_id', userId);
+        catData.append('catId', id);
+        catData.append('image', image);
+
         let url = 'http://localhost:3001/api/v1/cats/' + id;
         axios.put(url, catData)
-            .then(response => {
+            .then( () => {
                 dispatch(editMyCatSuccess(catData));
+                dispatch(getCats(userId));
             })
             .catch(err => {
                 dispatch(editMyCatFail(err));
-            });
-    };
-};
-
-// ------ DELETE ------
-
-export const deleteMyCatStart = () => {
-    return {
-        type: actionTypes.DELETE_CAT_START
-    };
-};
-
-export const deleteMyCatSuccess = () => {
-    return {
-        type: actionTypes.DELETE_CAT_SUCCESS
-    };
-    
-};
-
-export const deleteMyCatFail = (error) => {
-    return {
-        type: actionTypes.DELETE_CAT_FAIL,
-        error: error
-    };
-};
-
-export const deleteCat = (catId) => {
-    return dispatch => {
-        dispatch(deleteMyCatStart());
-        const id = catId;
-        let url = 'http://localhost:3001/api/v1/cats/' + id;
-        axios.delete(url)
-            .then(response => {
-                dispatch(deleteMyCatSuccess());
-            })
-            .catch(err => {
-                dispatch(deleteMyCatFail(err));
             });
     };
 };
@@ -173,6 +134,43 @@ export const getWeights = (catId) => {
             })
             .catch(err => {
                 dispatch(getWeightsFail(err));
+            });
+    };
+};
+
+// ------ DELETE ------
+
+export const deleteMyCatStart = () => {
+    return {
+        type: actionTypes.DELETE_CAT_START
+    };
+};
+
+export const deleteMyCatSuccess = () => {
+    return {
+        type: actionTypes.DELETE_CAT_SUCCESS
+    };
+    
+};
+
+export const deleteMyCatFail = (error) => {
+    return {
+        type: actionTypes.DELETE_CAT_FAIL,
+        error: error
+    };
+};
+
+export const deleteCat = (catId) => {
+    return dispatch => {
+        dispatch(deleteMyCatStart());
+        const id = catId;
+        let url = 'http://localhost:3001/api/v1/cats/' + id;
+        axios.delete(url)
+            .then(response => {
+                dispatch(deleteMyCatSuccess());
+            })
+            .catch(err => {
+                dispatch(deleteMyCatFail(err));
             });
     };
 };

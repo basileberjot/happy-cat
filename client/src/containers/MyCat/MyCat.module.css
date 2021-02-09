@@ -7,6 +7,7 @@ input[type="date"]:before {
   input[type="date"]:valid:before {
     content: "";
   }
+  
 .MyCat {
     margin: 20px auto;
     width: 80%;
@@ -15,6 +16,12 @@ input[type="date"]:before {
     border: 1px solid #eee;
     padding: 20px 50px 20px 50px;
     box-sizing: border-box;
+}
+
+.Image {
+  border-radius: 50%;
+  width: 230px;
+  height: 230px;
 }
 
 @media (min-width: 600px) {

@@ -4,6 +4,7 @@ import classes from './MyCat.module.css';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import * as actions from '../../store/actions';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 const userId = localStorage.getItem('userId');
 
@@ -97,10 +98,9 @@ class MyCat extends Component {
             this.props.onSubmitRegister(this.state.controls.name.value, this.state.controls.birthdate.value, this.state.controls.breed.value, userId, this.state.featured_image);
         } else {
             const catId = this.props.catId;
-            this.props.onSubmitEdit(this.state.controls.name.value, this.state.controls.birthdate.value, this.state.controls.breed.value, userId, catId);
+            this.props.onSubmitEdit(this.state.controls.name.value, this.state.controls.birthdate.value, this.state.controls.breed.value, userId, catId, this.state.featured_image);
             this.setState({ goToEdit: false });
         }
-        this.props.getCats(userId);
     }
 
     editContinueHandler = () => {
@@ -149,6 +149,13 @@ class MyCat extends Component {
             />
             ));
 
+        let image = <Spinner />;
+        if (!this.props.loading && this.props.image) {
+            image = (
+                <img className={classes.Image} src={this.props.image.url} />
+            );
+        }
+
         return (
             !this.props.hasCat || this.props.editCat || this.state.goToEdit ? 
             <div className={classes.MyCat}>
@@ -164,6 +171,7 @@ class MyCat extends Component {
             </div>
             : 
             <div className={classes.MyCat}>
+                    {image}
                     <h1>{this.props.catName}</h1>
                     <p>
                         {this.props.catBirthdate} | {/* {this.props.catWeight} kg | */} {this.props.catBreed}
@@ -182,6 +190,7 @@ const mapStateToProps = state => {
         catBreed: state.myCat.breed,
         catId: state.myCat.catId,
         hasCat: state.myCat.hasCat,
+        image: state.myCat.image,
         editCat: state.myCat.editCat
     }
 }
@@ -190,7 +199,7 @@ const mapDispatchToProps = dispatch => {
     return {
         getCats: (userId) => dispatch(actions.getCats(userId)),
         onSubmitRegister: (name, birthdate, breed, userId, image) => dispatch(actions.register(name, birthdate, breed, userId, image)),
-        onSubmitEdit: (name, birthdate, breed, userId, catId) => dispatch(actions.edit(name, birthdate, breed, userId, catId)),
+        onSubmitEdit: (name, birthdate, breed, userId, catId, image) => dispatch(actions.edit(name, birthdate, breed, userId, catId, image)),
         onDelete: (catId) => dispatch(actions.deleteCat(catId))
     };
 }

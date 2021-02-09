@@ -33,7 +33,6 @@ export const submitWeight = (catWeight, catId) => {
             value: catWeight,
             cat_id: catId
         };
-        console.log(catData);
         let url = 'http://localhost:3001/api/v1/weights';
         axios.post(url, catData)
             .then( () => {
@@ -76,6 +75,7 @@ export const deleteWeights = (catId) => {
         axios.delete(url)
             .then(response => {
                 dispatch(deleteWeightsSuccess());
+                dispatch(actions.getWeights(catId));
             })
             .catch(err => {
                 dispatch(deleteWeightsFail(err));

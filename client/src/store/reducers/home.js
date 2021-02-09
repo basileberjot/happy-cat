@@ -34,15 +34,8 @@ const deleteWeightsStart = (state, action) => {
 
 const deleteWeightsSuccess = (state, action) => {
     return updateObject(state, {
-        // name: '',
-        // birthdate: '',
-        // weight: '',
-        // breed: '',
-        // userId: '',
-        // catId: '',
-        // error: null,
-        // loading: false,
-        // hasCat: false
+        error: null,
+        loading: false
     });
 };
 
