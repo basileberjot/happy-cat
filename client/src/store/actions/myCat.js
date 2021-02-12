@@ -186,6 +186,7 @@ export const getCatStart = () => {
 export const getCatSuccess = (catData) => {
     return {
         type: actionTypes.GET_CAT_SUCCESS,
+        cats: catData,
         name: catData.name,
         birthdate: catData.birthdate,
         breed: catData.breed,
@@ -194,7 +195,6 @@ export const getCatSuccess = (catData) => {
         image: catData.image,
         hasCat: true
     };
-    
 };
 
 export const getCatFail = (error) => {
@@ -211,8 +211,9 @@ export const getCats = (userId) => {
         let url = 'http://localhost:3001/api/v1/user/' + userId + '/cats';
         axios.get(url)
             .then(response => {
-                catData = (response.data[0]);
+                catData = (response.data);
                 if (catData.length !== 0) {
+                    console.log(response.data);
                     dispatch(getCatSuccess(catData));
                     dispatch(getWeights(catData.id));
                 } else {

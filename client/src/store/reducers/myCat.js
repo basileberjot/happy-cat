@@ -2,6 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../utility';
 
 const initialState = {
+    cats: [],
     name: null,
     birthdate: null,
     weight: null,
@@ -90,6 +91,7 @@ const getCatStart = (state, action) => {
 
 const getCatSuccess = (state, action) => {
     return updateObject(state, {
+        cats: action.cats,
         name: action.name,
         birthdate: action.birthdate,
         weight: action.weight,

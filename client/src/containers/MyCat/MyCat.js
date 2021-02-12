@@ -5,6 +5,8 @@ import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import * as actions from '../../store/actions';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import Aux from '../../hoc/Auxiliary/Auxiliary';
+import Cat from '../../components/Cat/Cat';
 
 const userId = localStorage.getItem('userId');
 
@@ -52,6 +54,7 @@ class MyCat extends Component {
             }
         },
         goToEdit: false,
+        addNewCat: false,
         featured_image: null
     }
 
@@ -94,7 +97,7 @@ class MyCat extends Component {
         //prevents the reloading of the page
         event.preventDefault();
 
-        if(!this.state.goToEdit) {
+        if(!this.state.goToEdit || this.state.addNewCat) {
             this.props.onSubmitRegister(this.state.controls.name.value, this.state.controls.birthdate.value, this.state.controls.breed.value, userId, this.state.featured_image);
         } else {
             const catId = this.props.catId;
@@ -109,8 +112,15 @@ class MyCat extends Component {
         });
     }
 
+    addNewCatHandler = () => {
+        this.setState({
+            goToEdit: true,
+            addNewCat: true
+        });
+    }
+
     returnHandler = () => {
-        this.setState({ goToEdit: false });
+        this.setState({ goToEdit: false, addNewCat: false });
     }
 
     deleteHandler = () => {
@@ -149,17 +159,25 @@ class MyCat extends Component {
             />
             ));
 
-        let image = <Spinner />;
-        if (!this.props.loading && this.props.image) {
-            image = (
-                <img className={classes.Image} src={this.props.image.url} />
-            );
+        let cats = <Spinner />;
+        if (!this.props.loading) {
+            cats = this.props.cats.map(cat => (
+                <Cat 
+                    key={cat.id}
+                    name={cat.name}
+                    birthdate={cat.birthdate}
+                    breed={cat.breed}
+                    image={cat.image.url}
+                    editContinueHandler={this.editContinueHandler}
+                    deleteHandler={this.deleteHandler}
+                />
+            ))
         }
 
         return (
             !this.props.hasCat || this.props.editCat || this.state.goToEdit ? 
             <div className={classes.MyCat}>
-                <h1>{!this.state.goToEdit ? 'Who\'s your little buddy ? (^・ω・^ )' : 'Edit your Cat'}</h1>
+                <h1>{!this.state.goToEdit || this.state.addNewCat ? 'Who\'s your little buddy ? (^・ω・^ )' : 'Edit your Cat'}</h1>
                 <form onSubmit={this.submitHandler}>
                     {form}
                     <label htmlFor="image">Upload image
@@ -170,21 +188,17 @@ class MyCat extends Component {
                 </form>
             </div>
             : 
-            <div className={classes.MyCat}>
-                    {image}
-                    <h1>{this.props.catName}</h1>
-                    <p>
-                        {this.props.catBirthdate} | {/* {this.props.catWeight} kg | */} {this.props.catBreed}
-                    </p>
-                    <Button btnType="Success" clicked={this.editContinueHandler}>Edit</Button>
-                    <Button btnType="Danger" clicked={this.deleteHandler}>Delete</Button>
-            </div> 
+            <div>
+                {cats}
+                <Button btnType="Success" clicked={this.addNewCatHandler}>Add a new Cat</Button>
+            </div>
         );
     };
 };
 
 const mapStateToProps = state => {
     return {
+        cats: state.myCat.cats,
         catName: state.myCat.name,
         catBirthdate: state.myCat.birthdate,
         catBreed: state.myCat.breed,
