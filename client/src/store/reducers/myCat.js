@@ -108,7 +108,8 @@ const getCatSuccess = (state, action) => {
 const getCatFail = (state, action) => {
     return updateObject(state, {
         error: action.error,
-        loading: false
+        loading: false,
+        hasCat: action.hasCat
     });
 };
 
@@ -125,8 +126,7 @@ const deleteCatSuccess = (state, action) => {
         userId: '',
         catId: '',
         error: null,
-        loading: false,
-        hasCat: false
+        loading: false
     });
 };
 

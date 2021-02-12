@@ -1,12 +1,14 @@
 .MyCat {
     margin: 20px auto;
-    width: 80%;
+    width: 30%;
     text-align: center;
     box-shadow: 0 2px 3px #ccc;
     border: 1px solid #eee;
     padding: 20px 50px 20px 50px;
     box-sizing: border-box;
-}
+    /* display: flex;
+    flex-direction: row; */
+  }
 
 .Image {
   border-radius: 50%;

@@ -17,7 +17,7 @@ const navigationItems = ( props ) => {
         navigationItems = (
         <Aux>
             <NavigationItem exact link="/">Happy Cat</NavigationItem>
-            <NavigationItem link="/my-cat">My Cat</NavigationItem>
+            <NavigationItem link="/my-cat">{props.cats ? 'My Cats' : 'My Cat'}</NavigationItem>
             <NavigationItem link="/logout">Log Out</NavigationItem>
         </Aux>
         );

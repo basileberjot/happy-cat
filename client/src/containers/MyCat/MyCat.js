@@ -55,7 +55,8 @@ class MyCat extends Component {
         },
         goToEdit: false,
         addNewCat: false,
-        featured_image: null
+        featured_image: null,
+        id: null
     }
 
     // Form validation rules 
@@ -99,17 +100,20 @@ class MyCat extends Component {
 
         if(!this.state.goToEdit || this.state.addNewCat) {
             this.props.onSubmitRegister(this.state.controls.name.value, this.state.controls.birthdate.value, this.state.controls.breed.value, userId, this.state.featured_image);
+            this.setState({ goToEdit: false });
         } else {
-            const catId = this.props.catId;
+            const catId = this.state.id;
             this.props.onSubmitEdit(this.state.controls.name.value, this.state.controls.birthdate.value, this.state.controls.breed.value, userId, catId, this.state.featured_image);
             this.setState({ goToEdit: false });
         }
     }
 
-    editContinueHandler = () => {
-        this.setState({ 
+    editContinueHandler = (catId) => {
+        this.setState({
+            id: catId,
             goToEdit: true
         });
+        console.log(this.state.id);
     }
 
     addNewCatHandler = () => {
@@ -123,11 +127,10 @@ class MyCat extends Component {
         this.setState({ goToEdit: false, addNewCat: false });
     }
 
-    deleteHandler = () => {
-        let catId = this.props.catId;
+    deleteHandler = (catId) => {
         let confirm = window.confirm('Are you sure you want to delete your Cat ?');
         if (confirm) {
-            this.props.onDelete(catId);
+            this.props.onDelete(catId, userId);
         } 
     }
 
@@ -158,7 +161,7 @@ class MyCat extends Component {
                 changed={(event) => this.inputChangedHandler(event, formElement.id)}
             />
             ));
-
+ 
         let cats = <Spinner />;
         if (!this.props.loading) {
             cats = this.props.cats.map(cat => (
@@ -168,8 +171,8 @@ class MyCat extends Component {
                     birthdate={cat.birthdate}
                     breed={cat.breed}
                     image={cat.image.url}
-                    editContinueHandler={this.editContinueHandler}
-                    deleteHandler={this.deleteHandler}
+                    edit={() => this.editContinueHandler(cat.id)}
+                    delete={() => this.deleteHandler(cat.id)}
                 />
             ))
         }
@@ -214,7 +217,7 @@ const mapDispatchToProps = dispatch => {
         getCats: (userId) => dispatch(actions.getCats(userId)),
         onSubmitRegister: (name, birthdate, breed, userId, image) => dispatch(actions.register(name, birthdate, breed, userId, image)),
         onSubmitEdit: (name, birthdate, breed, userId, catId, image) => dispatch(actions.edit(name, birthdate, breed, userId, catId, image)),
-        onDelete: (catId) => dispatch(actions.deleteCat(catId))
+        onDelete: (catId, userId) => dispatch(actions.deleteCat(catId, userId))
     };
 }
 

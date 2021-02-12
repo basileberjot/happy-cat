@@ -18,10 +18,10 @@ const cat = (props) => {
             <p>
                 {props.birthdate} | {props.breed}
             </p>
-            <Button btnType="Success" clicked={props.editContinueHandler}>Edit</Button>
-            <Button btnType="Danger" clicked={props.deleteHandler}>Delete</Button>
+            <Button btnType="Success" clicked={props.edit}>Edit</Button>
+            <Button btnType="Danger" clicked={props.delete}>Delete</Button>
         </div> 
     );
-}
+} 
 
 export default cat;

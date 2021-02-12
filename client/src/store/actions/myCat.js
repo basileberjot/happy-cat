@@ -79,7 +79,7 @@ export const editMyCatFail = (error) => {
 export const edit = (name, birthdate, breed, userId, catId, image) => {
     return dispatch => {
         dispatch(editMyCatStart());
-        const id = catId
+        const id = catId;
 
         const catData = new FormData();
         catData.append('name', name);
@@ -160,7 +160,7 @@ export const deleteMyCatFail = (error) => {
     };
 };
 
-export const deleteCat = (catId) => {
+export const deleteCat = (catId, userId) => {
     return dispatch => {
         dispatch(deleteMyCatStart());
         const id = catId;
@@ -168,6 +168,7 @@ export const deleteCat = (catId) => {
         axios.delete(url)
             .then(response => {
                 dispatch(deleteMyCatSuccess());
+                dispatch(getCats(userId));
             })
             .catch(err => {
                 dispatch(deleteMyCatFail(err));
@@ -200,7 +201,8 @@ export const getCatSuccess = (catData) => {
 export const getCatFail = (error) => {
     return {
         type: actionTypes.GET_CAT_FAIL,
-        error: error
+        error: error,
+        hasCat: false
     };
 };
 

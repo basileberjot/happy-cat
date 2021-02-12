@@ -26,6 +26,7 @@ class Layout extends Component {
             <Toolbar 
                 drawerToggleClicked={this.sideDrawerToggleHandler}
                 isAuth={this.props.isAuthenticated}
+                cats={this.props.cats}
             />
             <SideDrawer 
                 open={this.state.showSideDrawer} 
@@ -41,7 +42,8 @@ class Layout extends Component {
 
 const mapStateToProps = state => {
     return {
-        isAuthenticated: state.auth.token !== null
+        isAuthenticated: state.auth.token !== null,
+        cats: state.myCat.cats.length > 1
     }
 };
 
