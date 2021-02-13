@@ -222,7 +222,7 @@ class Home extends Component {
                     </div>
             :
                 <div className={classes.Home}>
-                    Welcome to your favorite cat health monitoring app, Happy Cat ! <br/> To start using the application, please <span className={classes.FollowLink} onClick={this.logInHandler}>log in</span> or <span className={classes.FollowLink} onClick={this.logInHandler}>create an account</span> !
+                    Welcome to your favorite cat weight monitoring app, Happy Cat ! <br/> To start using the application, please <span className={classes.FollowLink} onClick={this.logInHandler}>log in</span> or <span className={classes.FollowLink} onClick={this.logInHandler}>create an account</span> !
                 </div>
         );
     }
