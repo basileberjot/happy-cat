@@ -24,11 +24,15 @@ class Home extends Component {
                 touched: false
             }
         },
-        displayWeights: true
-    }
+        displayWeights: false,
+        hasSelectedCat: false,
 
-    componentDidMount() {
-        // console.log(this.props.image);
+        catName: null,
+        catBirthdate: null,
+        catBreed: null,
+        catId: null,
+        weights: null,
+        catImage: null
     }
 
     // updates the input element when we enter something
@@ -70,7 +74,7 @@ class Home extends Component {
         //prevents the reloading of the page
         event.preventDefault();
 
-        const catId = this.props.catId;
+        const catId = this.state.catId;
         this.props.onSubmitWeight(this.state.controls.weight.value, catId);
         this.setState({displayWeights: true});
     }
@@ -94,11 +98,42 @@ class Home extends Component {
     }
 
     clearWeightsHandler = () => {
-        let catId = this.props.catId;
+        let catId = this.state.catId;
         let confirm = window.confirm('Are you sure you want to clear your Cat\'s weight history ?');
         if (confirm) {
             this.props.onClearWeights(catId);
         } 
+    }
+
+    selectCatHandler = (cat) => {
+        this.setState({
+            displayWeights: true,
+            hasSelectedCat: true,
+
+            catName: cat.name,
+            catBirthdate: cat.birthdate,
+            catBreed: cat.breed,
+            catImage: cat.image,
+            catId: cat.id
+        });
+
+        this.props.onGetWeights(cat.id);
+    }
+
+    returnHandler = () => {
+        this.setState({ 
+            displayWeights: false, 
+            addNewCat: false, 
+            changeImage: false,
+            hasSelectedCat: false,
+
+            catName: null,
+            catBirthdate: null,
+            catBreed: null,
+            catId: null,
+            weights: null,
+            catImage: null
+        });
     }
 
     render () {
@@ -139,34 +174,48 @@ class Home extends Component {
         }
 
         let image = <Spinner />;
-        if (!this.props.loading && this.props.image) {
+        if (!this.props.loading && this.state.catImage) {
             image = (
-                <img className={classes.Image} src={this.props.image.url} />
+                <img className={classes.Image} src={this.state.catImage.url} />
             );
+        }
+
+        let catsImage = <Spinner />;
+        if (!this.props.loading) {
+            catsImage = this.props.cats.map(cat => (
+                <img className={classes.Image} src={cat.image.url} onClick={() => this.selectCatHandler(cat)}/>
+            ))
         }
     
         return (
             this.props.isAuthenticated ?
                 this.props.hasCat ?
-                    this.state.displayWeights ? 
-                        <div className={classes.Home}>
-                            {image}
-                            <br />
-                            <Button btnType="Success" clicked={this.displayWeightFormHandler}>Enter a new weight !</Button>
-                            <br />
-                            <Button btnType="Change" clicked={this.clearWeightsHandler}>Clear weight history</Button>
-                            {this.props.weights ? <h1>{this.props.catName}'s weight history</h1> : null}
-                            {weights}
-                        </div>
+                    this.state.hasSelectedCat ?
+                        this.state.displayWeights ?
+                            <div className={classes.Home}>
+                                {image}
+                                <br />
+                                <Button btnType="Success" clicked={this.displayWeightFormHandler}>Enter a new weight !</Button>
+                                <br />
+                                {this.props.weights.length >= 1 ? <Button btnType="Change" clicked={this.clearWeightsHandler}>Clear weight history</Button> : null}
+                                {this.props.weights.length >= 1 ? <h1>{this.state.catName}'s weight history</h1> : null}
+                                {weights}
+                                <Button btnType="Change" clicked={this.returnHandler}>Back to Home</Button>
+                            </div>
+                        :
+                            <div className={classes.Home}>
+                                <h1>How much does {this.state.catName} weigh today ?</h1>
+                                <form onSubmit={this.submitHandler}>
+                                    {form}
+                                    <Button btnType="Success">Submit !</Button>
+                                    {!this.state.displayWeights ? <Button btnType="Change" clicked={this.displayWeightsHandler}>Back</Button> : null}
+                                </form>
+                            </div>
                     :
-                        <div className={classes.Home}>
-                            <h1>How much does {this.props.catName} weigh today ?</h1>
-                            <form onSubmit={this.submitHandler}>
-                                {form}
-                                <Button btnType="Success">Submit !</Button>
-                                {!this.state.displayWeights ? <Button btnType="Change" clicked={this.displayWeightsHandler}>Back</Button> : null}
-                            </form>
-                        </div>
+                    <div className={classes.Home}>
+                        <h1>Select a Cat !</h1>
+                        {catsImage}
+                    </div>
                 :
                     <div className={classes.Home}>
                         You didn’t register your cat yet. Please tell us about your kitty <span className={classes.FollowLink} onClick={this.registerCatHandler}>here</span> !
@@ -182,20 +231,19 @@ class Home extends Component {
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.auth.token !== null,
-        catName: state.myCat.name,
-        catId: state.myCat.catId,
         hasCat: state.myCat.hasCat,
-        loading: state.home.loading,
         weights: state.myCat.weights,
-        image: state.myCat.image,
+        loading: state.home.loading,
         hasSubmitWeight: state.home.hasSubmitWeight,
+        cats: state.myCat.cats
     };
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         onSubmitWeight: (weight, catId) => dispatch(actions.submitWeight(weight, catId)),
-        onClearWeights: (catId) => dispatch(actions.deleteWeights(catId))
+        onClearWeights: (catId) => dispatch(actions.deleteWeights(catId)),
+        onGetWeights: (catId) => dispatch(actions.getWeights(catId))
     };
 }
 

@@ -215,7 +215,8 @@ class MyCat extends Component {
                 </form>
             </div>
             : 
-            <div>
+            <div className={classes.MyCat}>
+                {this.props.cats.length > 1 ? <h1>My Cats</h1> : <h1>My Cat</h1>}
                 {cats}
                 <Button btnType="Success" clicked={this.addNewCatHandler}>Add a new Cat</Button>
             </div>

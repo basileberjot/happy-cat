@@ -15,9 +15,11 @@
 }
 
 .Image {
+    margin: 5px;
     border-radius: 50%;
     width: 230px;
     height: 230px;
+    cursor: pointer;
 }
 
 @media (min-width: 600px) {

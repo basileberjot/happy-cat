@@ -216,7 +216,6 @@ export const getCats = (userId) => {
                 catData = (response.data);
                 if (catData.length !== 0) {
                     dispatch(getCatSuccess(catData));
-                    dispatch(getWeights(catData.id));
                 } else {
                     dispatch(getCatFail());
                 }
