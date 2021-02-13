@@ -43,7 +43,7 @@ module Api::V1
     def get_cats
         @user = User.find(params[:id])
         @cats = @user.cats
-        render json: @cats
+        render json: @cats.order(created_at: :asc)
     end
 
     private

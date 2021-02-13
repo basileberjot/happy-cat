@@ -20,8 +20,8 @@ input[type="date"]:before {
 
 .Image {
   border-radius: 50%;
-  width: 230px;
-  height: 230px;
+  width: 200px;
+  height: 200px;
 }
 
 @media (min-width: 600px) {

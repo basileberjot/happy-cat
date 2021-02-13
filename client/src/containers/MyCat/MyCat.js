@@ -5,7 +5,6 @@ import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import * as actions from '../../store/actions';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import Aux from '../../hoc/Auxiliary/Auxiliary';
 import Cat from '../../components/Cat/Cat';
 
 const userId = localStorage.getItem('userId');
@@ -19,7 +18,7 @@ class MyCat extends Component {
                     type: 'text',
                     placeholder: 'Name'
                 },
-                value: this.props.catName !== '' ? this.props.catName : '',
+                value: '',
                 validation: {
                     required: true
                 },
@@ -32,7 +31,7 @@ class MyCat extends Component {
                     type: 'date',
                     placeholder: 'Birthdate :',
                 },
-                value: this.props.catBirthdate !== '' ? this.props.catBirthdate : '',
+                value: '',
                 validation: {
                     required: true
                 },
@@ -45,7 +44,7 @@ class MyCat extends Component {
                     type: 'text',
                     placeholder: 'Breed'
                 },
-                value: this.props.catBreed !== '' ? this.props.catBreed : '',
+                value: '',
                 validation: {
                     required: true
                 },
@@ -56,7 +55,9 @@ class MyCat extends Component {
         goToEdit: false,
         addNewCat: false,
         featured_image: null,
-        id: null
+        id: null,
+        cat: [],
+        changeImage: false
     }
 
     // Form validation rules 
@@ -100,20 +101,42 @@ class MyCat extends Component {
 
         if(!this.state.goToEdit || this.state.addNewCat) {
             this.props.onSubmitRegister(this.state.controls.name.value, this.state.controls.birthdate.value, this.state.controls.breed.value, userId, this.state.featured_image);
-            this.setState({ goToEdit: false });
         } else {
-            const catId = this.state.id;
-            this.props.onSubmitEdit(this.state.controls.name.value, this.state.controls.birthdate.value, this.state.controls.breed.value, userId, catId, this.state.featured_image);
-            this.setState({ goToEdit: false });
+            const catId = this.state.cat.id;
+            let image = null;
+            if(!this.state.changeImage) {
+                image = this.state.featured_image.signed_id;
+            } else {
+                image = this.state.featured_image;
+            }
+            this.props.onSubmitEdit(this.state.controls.name.value, this.state.controls.birthdate.value, this.state.controls.breed.value, userId, catId, image);
         }
+        this.setState({ goToEdit: false, changeImage: false, addNewCat: false });
     }
 
-    editContinueHandler = (catId) => {
+    editContinueHandler = (cat) => {
+        const updatedControls = {
+            ...this.state.controls,
+            name: {
+                ...this.state.controls.name,
+                value: cat.name
+            },
+            birthdate: {
+                ...this.state.controls.birthdate,
+                value: cat.birthdate
+            },
+            breed: {
+                ...this.state.controls.breed,
+                value: cat.breed
+            }
+        };
+        
         this.setState({
-            id: catId,
-            goToEdit: true
+            goToEdit: true,
+            cat: cat,
+            featured_image: cat.image,
+            controls: updatedControls
         });
-        console.log(this.state.id);
     }
 
     addNewCatHandler = () => {
@@ -124,7 +147,7 @@ class MyCat extends Component {
     }
 
     returnHandler = () => {
-        this.setState({ goToEdit: false, addNewCat: false });
+        this.setState({ goToEdit: false, addNewCat: false, changeImage: false });
     }
 
     deleteHandler = (catId) => {
@@ -134,8 +157,8 @@ class MyCat extends Component {
         } 
     }
 
-    onImageChange = event => { 
-        this.setState({ featured_image: event.target.files[0] });
+    onImageChange = event => {
+        this.setState({ featured_image: event.target.files[0], changeImage: true });
     };
 
     render () {
@@ -171,7 +194,7 @@ class MyCat extends Component {
                     birthdate={cat.birthdate}
                     breed={cat.breed}
                     image={cat.image.url}
-                    edit={() => this.editContinueHandler(cat.id)}
+                    edit={() => this.editContinueHandler(cat)}
                     delete={() => this.deleteHandler(cat.id)}
                 />
             ))
@@ -180,12 +203,13 @@ class MyCat extends Component {
         return (
             !this.props.hasCat || this.props.editCat || this.state.goToEdit ? 
             <div className={classes.MyCat}>
-                <h1>{!this.state.goToEdit || this.state.addNewCat ? 'Who\'s your little buddy ? (^・ω・^ )' : 'Edit your Cat'}</h1>
+                <h1>{!this.state.goToEdit || this.state.addNewCat ? 'Who\'s your little buddy ? (^・ω・^ )' : 'Edit ' + this.state.cat.name}</h1>
                 <form onSubmit={this.submitHandler}>
                     {form}
-                    <label htmlFor="image">Upload image
+                    <label htmlFor="image">{'Upload image '}
                         <input type="file" name="image" accept="image/*" onChange={this.onImageChange}/>
                     </label>
+                    {this.state.featured_image  !== null && !this.state.changeImage ? <img className={classes.Image} src={this.state.featured_image.url}/> : null}
                     <Button btnType="Success">Submit !</Button>
                     {this.state.goToEdit ? <Button btnType="Change" clicked={this.returnHandler}>Back</Button> : null}
                 </form>
