@@ -14,7 +14,10 @@ const userId = localStorage.getItem('userId');
 class App extends Component {
   componentDidMount () {
     this.props.onTryAutoSignup();
-    this.props.onTryGetCats();
+
+    if(userId) {
+      this.props.onTryGetCats();
+    }
   }
 
   render() {

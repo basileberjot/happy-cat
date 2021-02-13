@@ -140,9 +140,27 @@ class MyCat extends Component {
     }
 
     addNewCatHandler = () => {
+        const updatedControls = {
+            ...this.state.controls,
+            name: {
+                ...this.state.controls.name,
+                value: ''
+            },
+            birthdate: {
+                ...this.state.controls.birthdate,
+                value: ''
+            },
+            breed: {
+                ...this.state.controls.breed,
+                value: ''
+            }
+        };
+
         this.setState({
+            featured_image: null,
             goToEdit: true,
-            addNewCat: true
+            addNewCat: true,
+            controls: updatedControls
         });
     }
 
@@ -171,7 +189,6 @@ class MyCat extends Component {
             });
         }
 
-        // Email and password inputs
         let form = formElementsArray.map(formElement => (
             <Input 
                 key={formElement.id}

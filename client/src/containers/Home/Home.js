@@ -90,7 +90,15 @@ class Home extends Component {
     displayWeightFormHandler = (event) => {
         event.preventDefault();
 
-        this.setState({displayWeights: false});
+        const updatedControls = {
+            ...this.state.controls,
+            weight: {
+                ...this.state.controls.weight,
+                value: ''
+            }
+        };
+
+        this.setState({displayWeights: false, controls: updatedControls});
     }
 
     displayWeightsHandler = () => {
@@ -193,12 +201,13 @@ class Home extends Component {
                     this.state.hasSelectedCat ?
                         this.state.displayWeights ?
                             <div className={classes.Home}>
+                                <h1>{this.state.catName}</h1>
                                 {image}
                                 <br />
                                 <Button btnType="Success" clicked={this.displayWeightFormHandler}>Enter a new weight !</Button>
                                 <br />
-                                {this.props.weights.length >= 1 ? <Button btnType="Change" clicked={this.clearWeightsHandler}>Clear weight history</Button> : null}
-                                {this.props.weights.length >= 1 ? <h1>{this.state.catName}'s weight history</h1> : null}
+                                {this.props.weights !== null && this.props.weights.length >= 1 ? <Button btnType="Danger" clicked={this.clearWeightsHandler}>Clear weight history</Button> : null}
+                                {this.props.weights !== null && this.props.weights.length >= 1 ? <h1>{this.state.catName}'s weight history</h1> : null}
                                 {weights}
                                 <Button btnType="Change" clicked={this.returnHandler}>Back to Home</Button>
                             </div>
