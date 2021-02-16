@@ -169,10 +169,28 @@ class MyCat extends Component {
     }
 
     deleteHandler = (catId) => {
+        const updatedControls = {
+            ...this.state.controls,
+            name: {
+                ...this.state.controls.name,
+                value: ''
+            },
+            birthdate: {
+                ...this.state.controls.birthdate,
+                value: ''
+            },
+            breed: {
+                ...this.state.controls.breed,
+                value: ''
+            }
+        };
+
         let confirm = window.confirm('Are you sure you want to delete your Cat ?');
         if (confirm) {
             this.props.onDelete(catId, userId);
         } 
+
+        this.setState({controls: updatedControls, featured_image: null});
     }
 
     onImageChange = event => {
@@ -223,7 +241,7 @@ class MyCat extends Component {
                 <h1>{!this.state.goToEdit || this.state.addNewCat ? 'Who\'s your little buddy ? (^・ω・^ )' : 'Edit ' + this.state.cat.name}</h1>
                 <form onSubmit={this.submitHandler}>
                     {form}
-                    <label htmlFor="image">{'Upload image '}
+                    <label htmlFor="image">{this.state.featured_image !== null ? <span>Upload a new image </span> : <span>Upload image </span> }
                         <input type="file" name="image" accept="image/*" onChange={this.onImageChange}/>
                     </label>
                     {this.state.featured_image  !== null && !this.state.changeImage ? <img className={classes.Image} src={this.state.featured_image.url}/> : null}
