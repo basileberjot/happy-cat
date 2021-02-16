@@ -16,7 +16,7 @@ class MyCat extends Component {
                 elementType: 'input',
                 elementConfig: {
                     type: 'text',
-                    placeholder: 'Name'
+                    placeholder: 'Name '
                 },
                 value: '',
                 validation: {
@@ -29,7 +29,7 @@ class MyCat extends Component {
                 elementType: 'input',
                 elementConfig: {
                     type: 'date',
-                    placeholder: 'Birthdate :',
+                    placeholder: 'Birthdate ',
                 },
                 value: '',
                 validation: {
@@ -42,7 +42,7 @@ class MyCat extends Component {
                 elementType: 'input',
                 elementConfig: {
                     type: 'text',
-                    placeholder: 'Breed'
+                    placeholder: 'Breed '
                 },
                 value: '',
                 validation: {
@@ -208,16 +208,20 @@ class MyCat extends Component {
         }
 
         let form = formElementsArray.map(formElement => (
-            <Input 
-                key={formElement.id}
-                elementType={formElement.config.elementType} 
-                elementConfig={formElement.config.elementConfig}
-                value={formElement.config.value}
-                invalid={!formElement.config.valid}
-                shouldValidate={formElement.config.validation}
-                touched={formElement.config.touched}
-                changed={(event) => this.inputChangedHandler(event, formElement.id)}
-            />
+            <div>
+                {console.log(formElement)}
+                <Input 
+                    key={formElement.id}
+                    label={formElement.config.elementConfig.placeholder}
+                    elementType={formElement.config.elementType} 
+                    elementConfig={formElement.config.elementConfig}
+                    value={formElement.config.value}
+                    invalid={!formElement.config.valid}
+                    shouldValidate={formElement.config.validation}
+                    touched={formElement.config.touched}
+                    changed={(event) => this.inputChangedHandler(event, formElement.id)}
+                />
+            </div>
             ));
  
         let cats = <Spinner />;
@@ -241,7 +245,7 @@ class MyCat extends Component {
                 <h1>{!this.state.goToEdit || this.state.addNewCat ? 'Who\'s your little buddy ? (^・ω・^ )' : 'Edit ' + this.state.cat.name}</h1>
                 <form onSubmit={this.submitHandler}>
                     {form}
-                    <label htmlFor="image">{this.state.featured_image !== null ? <span>Upload a new image </span> : <span>Upload image </span> }
+                    <label htmlFor="image">{this.state.featured_image !== null ? <span>Upload a new image *</span> : <span>Upload image *</span> }
                         <input type="file" name="image" accept="image/*" onChange={this.onImageChange}/>
                     </label>
                     {this.state.featured_image  !== null && !this.state.changeImage ? <img className={classes.Image} src={this.state.featured_image.url}/> : null}
