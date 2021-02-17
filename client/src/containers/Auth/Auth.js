@@ -106,6 +106,7 @@ class Auth extends Component {
         let form = formElementsArray.map(formElement => (
             <Input 
                 key={formElement.id}
+                label={formElement.config.elementConfig.placeholder}
                 elementType={formElement.config.elementType} 
                 elementConfig={formElement.config.elementConfig}
                 value={formElement.config.value}

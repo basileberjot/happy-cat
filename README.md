@@ -1,24 +1,9 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Simple CRUD for cats, cat's weight history (create/destroy all) and authentication functionality made with React/Ruby on Rails API.
 
-Things you may want to cover:
+At root : rails s -p 3001
 
-* Ruby version
+/client : npm start
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Run migrations : rails db:create

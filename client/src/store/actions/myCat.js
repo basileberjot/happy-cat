@@ -188,12 +188,6 @@ export const getCatSuccess = (catData) => {
     return {
         type: actionTypes.GET_CAT_SUCCESS,
         cats: catData,
-        name: catData.name,
-        birthdate: catData.birthdate,
-        breed: catData.breed,
-        userId: catData.user_id,
-        catId: catData.id,
-        image: catData.image,
         hasCat: true
     };
 };
@@ -225,4 +219,3 @@ export const getCats = (userId) => {
             });
     }
 }
-

@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
+import * as actions from '../../store/actions';
 
 // use this action to set a loading state and show a loading spinner 
 export const authStart = () => {
@@ -26,6 +27,7 @@ export const authFail = (error) => {
 export const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('expirationDate');
+    localStorage.removeItem('userId');
     return {
         type: actionTypes.AUTH_LOGOUT
     };
@@ -57,6 +59,7 @@ export const auth = (email, password, isSignUp) => {
                 localStorage.setItem('expirationDate', expirationDate);
                 localStorage.setItem('userId', response.data.user.id);
                 dispatch(authSuccess(response.data.jwt, response.data.user.id));
+                dispatch(actions.getCats(response.data.user.id));
                 dispatch(checkAuthTimeout(response.data.expiresIn));
             })
             .catch(err => {
