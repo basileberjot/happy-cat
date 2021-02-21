@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+    
+  db:
+    image: postgres
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      # POSTGRES_DB: ${DB_NAME}
+      # POSTGRES_HOST_AUTH_METHOD: ${DB_HOST}
+    ports:
+      - 5432:5432
+    expose:
+      - "5432"
+
+  rails:
+    build:
+      context: .
+      dockerfile: Docker_rails
+    command: /bin/sh -c "cd app && rm -f /app/tmp/pids/server.pid && bundle install && bundle exec rails db:migrate && bundle exec rails s -p 3001 -b 0.0.0.0"
+    stdin_open: true
+    tty: true
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    ports:
+      - 3001:3001
+    links: 
+      - db
+    depends_on: 
+      - db
+
+  react:
+    build:
+      context: .
+      dockerfile: Docker_react
+    command: /bin/sh -c "cd client && yarn && yarn start"
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./client:/client
+    ports:
+      - 3000:3000
+    
