@@ -207,7 +207,6 @@ class MyCat extends Component {
 
         let form = formElementsArray.map(formElement => (
             <div>
-                {console.log(formElement)}
                 <Input 
                     key={formElement.id}
                     label={formElement.config.elementConfig.placeholder}
