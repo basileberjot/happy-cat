@@ -9,7 +9,8 @@ DB_PASSWORD=root
 DB_NAME=happy_cat_development
 DB_HOST=db
 DB_PORT=5432
-DB_URL: postgresql://postgres@host.docker.internal:5432/happy_cat_development?encoding=utf8&pool=5&timeout=5000```
+DB_URL: postgresql://postgres@host.docker.internal:5432/happy_cat_development?encoding=utf8&pool=5&timeout=5000
+```
 
 ##Run the app
 >Requires docker installed and running
@@ -17,4 +18,5 @@ DB_URL: postgresql://postgres@host.docker.internal:5432/happy_cat_development?en
 ```docker-compose build
 docker-compose run api bundle exec rails db:create
 docker-compose run api bundle exec rails db:migrate
-docker-compose up -d```
+docker-compose up -d
+```
