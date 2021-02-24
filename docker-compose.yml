@@ -17,18 +17,18 @@ services:
     expose:
       - "5432"
 
-  rails:
+  api:
     build:
       context: .
       dockerfile: Docker_rails
-    command: /bin/sh -c "cd app && rm -f /app/tmp/pids/server.pid && bundle install && bundle exec rails db:migrate && bundle exec rails s -p 3001 -b 0.0.0.0"
+    volumes:
+      - .:/app
+    command: /bin/sh -c "cd app && rm -f /app/tmp/pids/server.pid && bundle exec rails s -p 3001 -b 0.0.0.0"
     stdin_open: true
     tty: true
     restart: always
     env_file:
       - .env
-    volumes:
-      - .:/app
     ports:
       - 3001:3001
     links: 
@@ -36,7 +36,7 @@ services:
     depends_on: 
       - db
 
-  react:
+  front:
     build:
       context: .
       dockerfile: Docker_react
