@@ -2,7 +2,7 @@
 
 Simple CRUD for cats, cat's weight history (create/destroy all) and authentication made with React/Ruby on Rails API.
 
-##.env template
+## .env template
 
 ```DB_USERNAME=postgres
 DB_PASSWORD=root
@@ -12,8 +12,8 @@ DB_PORT=5432
 DB_URL: postgresql://postgres@host.docker.internal:5432/happy_cat_development?encoding=utf8&pool=5&timeout=5000
 ```
 
-##Run the app
->Requires docker installed and running
+## Run the app
+> Requires docker installed and running
 
 ```docker-compose build
 docker-compose run api bundle exec rails db:create
