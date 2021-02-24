@@ -4,7 +4,8 @@ Simple CRUD for cats, cat's weight history (create/destroy all) and authenticati
 
 ## .env template
 
-```DB_USERNAME=postgres
+```
+DB_USERNAME=postgres
 DB_PASSWORD=root
 DB_NAME=happy_cat_development
 DB_HOST=db
@@ -15,7 +16,8 @@ DB_URL: postgresql://postgres@host.docker.internal:5432/happy_cat_development?en
 ## Run the app
 > Requires docker installed and running
 
-```docker-compose build
+```
+docker-compose build
 docker-compose run api bundle exec rails db:create
 docker-compose run api bundle exec rails db:migrate
 docker-compose up -d
