@@ -21,5 +21,7 @@ docker-compose build
 docker-compose run api bundle exec rails db:create
 docker-compose run api bundle exec rails db:migrate
 docker-compose up -d
+
+Open localhost:3000
 ```
-> When finished, open localhost:3000
+
