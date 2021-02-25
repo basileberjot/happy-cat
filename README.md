@@ -3,6 +3,7 @@
 Simple CRUD for cats, cat's weight history (create/destroy all) and authentication made with React/Ruby on Rails API.
 
 ## .env template
+> Create .env at root 
 
 ```
 DB_USERNAME=postgres
