@@ -19,8 +19,6 @@ DB_URL=postgresql://postgres@host.docker.internal:5432/happy_cat_development?enc
 
 ```
 docker-compose build
-docker-compose run api bundle exec rails db:create
-docker-compose run api bundle exec rails db:migrate
 docker-compose up -d
 
 Open localhost:3000
